@@ -24,4 +24,6 @@ app = QApplication(sys.argv)
 window = MainWindow()
 window.show()
 
+print("Git Test")
+
 app.exec()
