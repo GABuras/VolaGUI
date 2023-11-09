@@ -8,7 +8,7 @@ class Window(QtWidgets.QWidget):
         super().__init__()
         self.service = service
         self.setWindowTitle("Results")
-        self.resize(1275, 350)
+        self.resize(1250, 350)
         self.CreateTable()
         self.show()
     
