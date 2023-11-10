@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
 
-        self.setWindowTitle("VolGUI")
+        self.setWindowTitle("VolaGUI")
 
         layout = QGridLayout()
         layout.setSpacing(1)
