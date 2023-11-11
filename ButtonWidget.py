@@ -10,33 +10,36 @@ class Window(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
        
-
-        # Button with a text and parent widget
+        # Queue Command Button
         queueBtn = QPushButton(text="Queue Command", parent=self)
         queueBtn.setAutoFillBackground(True)
-      
-
-
-
         queueBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        queueBtn.clicked.connect(self.queueBtnClicked)
 
-
-        # Button with an icon, a text, and a parent widget
+        # Execute Command Button
         executeCMDBtn = QPushButton(text="Execute Command", parent=self)
         executeCMDBtn.setAutoFillBackground(True)
         executeCMDBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-       
-        executeBtn = QPushButton(text="Execute Queue", parent=self)
-        executeBtn.setAutoFillBackground(True)
-        executeBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        executeCMDBtn.clicked.connect(self.executeCMDBtnClicked)
+
+        # Execute Queue Button
+        executeQUEBtn = QPushButton(text="Execute Queue", parent=self)
+        executeQUEBtn.setAutoFillBackground(True)
+        executeQUEBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        executeQUEBtn.clicked.connect(self.executeQUEBtnClicked)
 
         layout = QVBoxLayout()
         layout.addWidget(queueBtn)
         layout.addWidget(executeCMDBtn)
-        layout.addWidget(executeBtn)
+        layout.addWidget(executeQUEBtn)
         layout.setSpacing(0)
-
-        
-
         self.setLayout(layout)
 
+    def queueBtnClicked(self):
+        print("Queue Command Button Clicked")
+
+    def executeCMDBtnClicked(self):
+        print("Execute Command Button Clicked")
+
+    def executeQUEBtnClicked(self):
+        print("Execute Queue Button Clicked")
