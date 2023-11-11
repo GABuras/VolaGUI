@@ -1,5 +1,5 @@
 import sys
-
+import QueueWidget
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import QApplication, QPushButton, QVBoxLayout, QWidget,QSizePolicy
@@ -37,6 +37,7 @@ class Window(QWidget):
 
     def queueBtnClicked(self):
         print("Queue Command Button Clicked")
+        QueueWidget.add_to_queue("X") # Replace "X" with a variable holding the name of the selected command
 
     def executeCMDBtnClicked(self):
         print("Execute Command Button Clicked")

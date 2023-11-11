@@ -33,20 +33,20 @@ class Window(QWidget):
         
 
 
+        global queue
+        queue = QListWidget()
+        queue.addItems(["One", "Two", "Three"])
 
-        widget = QListWidget()
-        widget.addItems(["One", "Two", "Three"])
-
-        widget.currentItemChanged.connect(self.index_changed)
-        widget.currentTextChanged.connect(self.text_changed)
-        widget.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        queue.currentItemChanged.connect(self.index_changed)
+        queue.currentTextChanged.connect(self.text_changed)
+        queue.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
 
 
         layout = QVBoxLayout()
     
         layout.addLayout(headerlayout)
 
-        layout.addWidget(widget)
+        layout.addWidget(queue)
         layout.setSpacing(0)
 
 
@@ -60,3 +60,7 @@ class Window(QWidget):
 
     def text_changed(self, s): # s is a str
         print(s)
+
+def add_to_queue(command: str): # command is the name of the command
+    print("Add " + command + " to queue")
+    queue.addItem(command)
