@@ -1,5 +1,7 @@
 import sys
 import ResultTable
+import ButtonWidget
+import QueueWidget
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
@@ -41,13 +43,14 @@ class MainWindow(QMainWindow):
         layout.addWidget(Color('purple'), 2, 1,1,1)
 
         #Command Queque Area
-        layout.addWidget(Color('green'), 0, 2,2,1)
+        layout.addWidget(QueueWidget.Window(), 0, 2,2,1)
 
         #Queue Command Button
-        layout.addWidget(Color('yellow'), 1, 2,1,1)
+        #layout.addWidget(Color('yellow'), 1, 2,1,1)
 
-        #Execute Command Button
-        layout.addWidget(Color('black'), 2, 2,1,1)
+        #Queue Command Button & Execute Command Button
+        #layout.addWidget(Color('black'), 2, 2,1,1)
+        layout.addWidget(ButtonWidget.Window(), 2, 2,1,1)
 
         widget = QWidget()
         widget.setLayout(layout)
