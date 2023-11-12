@@ -44,3 +44,4 @@ class Window(QWidget):
 
     def executeQUEBtnClicked(self):
         print("Execute Queue Button Clicked")
+        QueueWidget.execute_queue()

@@ -31,11 +31,11 @@ class Window(QWidget):
         headerlayout.addWidget(header)
         headerlayout.addWidget(command)
         
-
-
-        global queue
+        global queue # Necessary to allow the button click handling code in ButtonWidget.py to update queue contents. Fix if you know how to
         queue = QListWidget()
-        queue.addItems(["One", "Two", "Three"])
+        # Placeholder text would be ideal, but seems a little complicated, so maybe do later
+        
+        # queue.addItems(["One", "Two", "Three"])
 
         queue.currentItemChanged.connect(self.index_changed)
         queue.currentTextChanged.connect(self.text_changed)
@@ -62,5 +62,10 @@ class Window(QWidget):
         print(s)
 
 def add_to_queue(command: str): # command is the name of the command
-    print("Add " + command + " to queue")
     queue.addItem(command)
+    print("Added " + command + " to queue")
+
+def execute_queue(): 
+    # for command in queue, execute and display results
+    queue.clear()
+    print("Executed queue")
