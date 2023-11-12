@@ -25,8 +25,6 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("VolaGUI")
 
-        self.showMaximized()
-
         layout = QGridLayout()
         layout.setSpacing(1)
 
@@ -62,6 +60,6 @@ class MainWindow(QMainWindow):
 app = QApplication(sys.argv)
 
 window = MainWindow()
-window.show()
+window.showMaximized()
 
 app.exec()
