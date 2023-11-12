@@ -12,24 +12,23 @@ class Window(QWidget):
     def __init__(self,parent=None):
         super().__init__(parent)
 
-        
-
         header = QLabel("Queue:")
         font = header.font()
         font.setPointSize(20)
         header.setFont(font)
         header.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
         header.setScaledContents(False)
-        header.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        # header.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        header.setFixedHeight(35)
 
-        command = QLineEdit()
-        command.setPlaceholderText("<Command>")
-        command.setReadOnly(True)
-        command.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        # command = QLineEdit()
+        # command.setPlaceholderText("<Command>")
+        # command.setReadOnly(True)
+        # command.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
 
         headerlayout = QHBoxLayout()
         headerlayout.addWidget(header)
-        headerlayout.addWidget(command)
+        # headerlayout.addWidget(command)
         
         global queue # Necessary to allow the button click handling code in ButtonWidget.py to update queue contents. Fix if you know how to
         queue = QListWidget()

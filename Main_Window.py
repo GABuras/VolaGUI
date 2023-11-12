@@ -44,7 +44,7 @@ class MainWindow(QMainWindow):
         # Command Building Area
         layout.addWidget(Color('purple'), 2, 1,1,1)
 
-        #Command Queque Area
+        #Command Queue Area
         layout.addWidget(QueueWidget.Window(), 0, 2,2,1)
 
         #Queue Command Button
