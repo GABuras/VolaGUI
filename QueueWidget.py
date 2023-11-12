@@ -36,8 +36,8 @@ class Window(QWidget):
         
         # queue.addItems(["One", "Two", "Three"])
 
-        queue.currentItemChanged.connect(self.index_changed)
-        queue.currentTextChanged.connect(self.text_changed)
+        # queue.currentItemChanged.connect(self.index_changed)
+        # queue.currentTextChanged.connect(self.text_changed)
         queue.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
 
 
@@ -54,11 +54,11 @@ class Window(QWidget):
         
 
 
-    def index_changed(self, i): # Not an index, i is a QListWidgetItem
-        print(i.text())
+    # def index_changed(self, i): # Not an index, i is a QListWidgetItem
+    #     print(i.text())
 
-    def text_changed(self, s): # s is a str
-        print(s)
+    # def text_changed(self, s): # s is a str
+    #     print(s)
 
 def add_to_queue(command: str): # command is the name of the command
     queue.addItem(command)
