@@ -22,10 +22,8 @@ class Color(QWidget):
         palette.setColor(QPalette.ColorRole.Window, QColor(color))
         self.setPalette(palette)
 
-commands = {"DLLs": ["dlldump", "dlllist"],
-                "Modules": ["moddump", "modules", "modscan"],
-                "Processes": ["pslist", "psscan", "pstree"],
-                "Registry": ["hivedump", "hivelist", "hivescan"]}
+commands = ["moddump", "modules", "modscan", "pslist", "psscan", "pstree""hivedump", "hivelist", "hivescan"]
+supported_commands = ["pslist", "psscan"]
 
 class MainWindow(QMainWindow):
 
@@ -115,22 +113,28 @@ class MainWindow(QMainWindow):
     @pyqtSlot(QTreeWidgetItem, int)
     def update_windows(self, it, col):
         command = it.text(col)
-        if command in ["pslist", "psscan"]:
+        if command in commands:
             if command is DataHandling.service:
                 return
             DataHandling.service = command
-            self.Description.hide()
-            self.Description = CommandDescription.Window()
-            self.layout.addWidget(self.Description, 0, 1,2,1)
+            if command in supported_commands: 
+                self.Description.hide()
+                self.Description = CommandDescription.Window()
+                self.layout.addWidget(self.Description, 0, 1,2,1)
+            else:
+                self.unsupported_command_error()
         
     def queueBtnClicked(self):
         print("Queue Command Button Clicked")
-        if DataHandling.service != None:
+        if DataHandling.service in commands:
             QueueWidget.add_to_queue(DataHandling.service) # Replace "X" with a variable holding the name of the selected command
 
     def executeCMDBtnClicked(self):
         print("Execute Command Button Clicked")
-        self.updateResults()
+        if DataHandling.service in supported_commands:
+            self.updateResults()
+        else:
+            self.unsupported_command_error()
 
     def executeQUEBtnClicked(self):
         print("Execute Queue Button Clicked")
@@ -141,6 +145,15 @@ class MainWindow(QMainWindow):
         self.Results = ResultTable.ResultWidget()
         self.layout.addWidget(self.Results, 3,0, -1, -1, 
                         alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignVCenter)
+        
+    def unsupported_command_error(self):
+        dlg = QMessageBox(self)
+        dlg.setWindowTitle("ERROR")
+        dlg.setText("Command not yet supported.")
+        button = dlg.exec()
+
+        if button == QMessageBox.StandardButton.Ok:
+            print("OK!")
     
 app = QApplication(sys.argv)
 window = MainWindow()
