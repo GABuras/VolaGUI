@@ -18,7 +18,13 @@ tree.setHeaderLabels(["Commands"])
 # onClick function for the commands
 @pyqtSlot(QTreeWidgetItem, int)
 def onItemClick(it, col):
-    print(f"The button {it.text(col)} has been pressed.")
+    match it.text(col):
+        case "pslist":
+            print('psslist case')
+        case "psscan":
+            print('psscan case')
+        case _:
+            print(f"The button {it.text(col)} has been pressed.")
 
 # add data to the tree
 commands = []
