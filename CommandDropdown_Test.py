@@ -15,8 +15,7 @@ class CommandDropdown(QtWidgets.QWidget):
         tree = QtWidgets.QTreeWidget()
         tree.setColumnCount(1)
         tree.setHeaderLabels(["Commands"])
-
-        self.service = None
+        tree.setSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
 
         # Command Dropdown List
         data = {
@@ -44,7 +43,7 @@ class CommandDropdown(QtWidgets.QWidget):
     def onItemClick(self, it, col):
         command = it.text(col)
         if command in ["pslist", "psscan"]:
-            if command is self.service:
+            if command is DataHandling.service:
                 return
             DataHandling.service = command
             DataHandling.service_changed = True

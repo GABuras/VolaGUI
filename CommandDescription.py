@@ -25,9 +25,13 @@ class Window(QWidget):
         header.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
         header.setScaledContents(False)
         header.setFixedHeight(35)
+        header.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         self.data = DataHandling.command_data
         headerlayout = QHBoxLayout()
         headerlayout.addWidget(header)
+        description = QLabel(None)
+        CommandInfo = QLabel(None)
+        
         layout.addLayout(headerlayout)
         if service is not None:
 
@@ -47,6 +51,6 @@ class Window(QWidget):
             CommandInfo.setScaledContents(False)
             CommandInfo.setWordWrap(True) 
 
-            layout.addWidget(description)
+        layout.addWidget(description)
             
-            layout.addWidget(CommandInfo)
+        layout.addWidget(CommandInfo)

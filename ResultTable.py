@@ -5,7 +5,6 @@ import DataHandling
 class ResultWidget(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
-        self.service = DataHandling.service
         # self.setWindowTitle("Results")
         # self.resize(1275, 350)
         self.CreateTable()
@@ -23,10 +22,10 @@ class ResultWidget(QtWidgets.QWidget):
         self.hBox.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
         if DataHandling.service is not None:
-            self.PopulateTable(self.service)
+            self.PopulateTable(DataHandling.service)
             # sets up the filter dropdown based on service headers
             self.filter_choice = QtWidgets.QComboBox()
-            for headers in self.data[self.service]["headers"]:
+            for headers in self.data[DataHandling.service]["headers"]:
                 self.filter_choice.addItem(headers)
             # sets up filter based on the table model
             # created in 'PopulateTable()' 
@@ -54,9 +53,10 @@ class ResultWidget(QtWidgets.QWidget):
             # sets up a table view of the model
             self.table_view = QtWidgets.QTableView()
             self.table_view.setModel(self.filter)
+            self.table_view.setSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
 
             # dynamically stretches the columns to make them fit the widget
-            for c in range(self.data[self.service]["columns"]):
+            for c in range(self.data[DataHandling.service]["columns"]):
                 self.table_view.horizontalHeader().setSectionResizeMode(c, 
                     QtWidgets.QHeaderView.ResizeMode.Stretch)
             #self.table_view.setMaximumHeight(175)

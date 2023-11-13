@@ -22,5 +22,5 @@ command_data = {
     "rows": count_rows
 }
 
-service = "pslist"
+service = None
 service_changed = False
