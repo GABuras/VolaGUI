@@ -2,6 +2,7 @@ import sys
 import ResultTable
 import ButtonWidget
 import QueueWidget
+import CommandDescription
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
@@ -37,7 +38,7 @@ class MainWindow(QMainWindow):
                          alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignVCenter)
 
         #Command Description Area
-        layout.addWidget(Color('blue'), 0, 1,2,1)
+        layout.addWidget(CommandDescription.Window(), 0, 1,2,1)
 
         # Command Building Area
         layout.addWidget(Color('purple'), 2, 1,1,1)
