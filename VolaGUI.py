@@ -3,6 +3,7 @@ import ResultTable
 import ButtonWidget
 import QueueWidget
 import CommandDescription
+import CommandDropdown
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
@@ -31,7 +32,7 @@ class MainWindow(QMainWindow):
 
 
         #Select and Show Command Area 
-        layout.addWidget(Color('red'), 0, 0,3,1)
+        layout.addWidget(TreeWidget.Window(), 0, 0,3,1)
 
         # Results Area
         layout.addWidget(ResultTable.ResultWidget("pslist"), 3,0, -1, -1, 
