@@ -3,9 +3,9 @@ from PyQt6.QtCore import Qt, QSortFilterProxyModel
 import DataHandling
 
 class ResultWidget(QtWidgets.QWidget):
-    def __init__(self, service):
+    def __init__(self):
         super().__init__()
-        self.service = service
+        self.service = DataHandling.service
         # self.setWindowTitle("Results")
         # self.resize(1275, 350)
         self.CreateTable()
@@ -14,55 +14,55 @@ class ResultWidget(QtWidgets.QWidget):
         self.filter: QSortFilterProxyModel
     
     def CreateTable(self):
-        self.PopulateTable(self.service)
 
-        # Creates a search widget using QLineEdit
-        self.searchfield = QtWidgets.QLineEdit()
-        self.searchfield.setFixedWidth(250)
-        self.searchfield.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        self.searchfield.setPlaceholderText("Search...")
-        self.searchfield.setStyleSheet("font-size: 15px; height: 20px;")
-
-        # sets up the filter dropdown based on service headers
-        self.filter_choice = QtWidgets.QComboBox()
-        for headers in self.data[self.service]["headers"]:
-            self.filter_choice.addItem(headers)
-        # sets up filter based on the table model
-        # created in 'PopulateTable()' 
-        self.filter = QSortFilterProxyModel()
-        self.filter.setSourceModel(self.model)
-        # changes filter choice when something in drop down is selected
-        self.filter_choice.activated.connect(self.set_filter)
-        self.filter_choice.setFixedWidth(250)
-
-        # Connects the filter and the search bar, filtering as text changes
-        self.searchfield.textChanged.connect(self.filter.setFilterFixedString)
-        
-        # Established horizontal box for the filter and search widgets
-        # aligning it to the left side
+        self.vBox = QtWidgets.QVBoxLayout()
+        self.vBox.addStretch(0)
+        self.vBox.setSpacing(0)
+        self.setLayout(self.vBox)
         self.hBox = QtWidgets.QHBoxLayout()
-        self.hBox.addWidget(self.filter_choice)
-        self.hBox.addWidget(self.searchfield)
         self.hBox.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
-        # sets up a table view of the model
-        self.table_view = QtWidgets.QTableView()
-        self.table_view.setModel(self.filter)
+        if DataHandling.service is not None:
+            self.PopulateTable(self.service)
+            # sets up the filter dropdown based on service headers
+            self.filter_choice = QtWidgets.QComboBox()
+            for headers in self.data[self.service]["headers"]:
+                self.filter_choice.addItem(headers)
+            # sets up filter based on the table model
+            # created in 'PopulateTable()' 
+            self.filter = QSortFilterProxyModel()
+            self.filter.setSourceModel(self.model)
+            # changes filter choice when something in drop down is selected
+            self.filter_choice.activated.connect(self.set_filter)
+            self.filter_choice.setFixedWidth(250)
 
-        # dynamically stretches the columns to make them fit the widget
-        for c in range(self.data[self.service]["columns"]):
-            self.table_view.horizontalHeader().setSectionResizeMode(c, 
-                QtWidgets.QHeaderView.ResizeMode.Stretch)
-        
-        # sets up the vertical box to hold the horizontal layout
-        # and the table view
-        self.vBox = QtWidgets.QVBoxLayout()
-        self.setLayout(self.vBox)
-        self.vBox.setSpacing(0)
-        #self.table_view.setMaximumHeight(175)
-        self.vBox.addLayout(self.hBox)
-        self.vBox.addWidget(self.table_view)
-        self.vBox.addStretch(0)
+            # Creates a search widget using QLineEdit
+            self.searchfield = QtWidgets.QLineEdit()
+            self.searchfield.setFixedWidth(250)
+            self.searchfield.setAlignment(Qt.AlignmentFlag.AlignLeft)
+            self.searchfield.setPlaceholderText("Search...")
+            self.searchfield.setStyleSheet("font-size: 15px; height: 20px;")
+
+            # Connects the filter and the search bar, filtering as text changes
+            self.searchfield.textChanged.connect(self.filter.setFilterFixedString)
+
+             # Established horizontal box for the filter and search widgets
+            # aligning it to the left side
+            self.hBox.addWidget(self.filter_choice)
+            self.hBox.addWidget(self.searchfield)
+
+            # sets up a table view of the model
+            self.table_view = QtWidgets.QTableView()
+            self.table_view.setModel(self.filter)
+
+            # dynamically stretches the columns to make them fit the widget
+            for c in range(self.data[self.service]["columns"]):
+                self.table_view.horizontalHeader().setSectionResizeMode(c, 
+                    QtWidgets.QHeaderView.ResizeMode.Stretch)
+            #self.table_view.setMaximumHeight(175)
+            self.vBox.addLayout(self.hBox)
+            self.vBox.addWidget(self.table_view)
+            
 
     def PopulateTable(self, service):
         # grabs the command data dictionary
@@ -88,8 +88,3 @@ class ResultWidget(QtWidgets.QWidget):
     # used to set the filter when changed
     def set_filter(self):
         self.filter.setFilterKeyColumn(self.filter_choice.currentIndex())
-
-# choice = input("Please type pslist or psscan to get results: ")
-# app = QtWidgets.QApplication(sys.argv)
-# window = ResultWidget(choice)
-# sys.exit(app.exec())

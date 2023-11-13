@@ -21,3 +21,6 @@ command_data = {
     },
     "rows": count_rows
 }
+
+service = "pslist"
+service_changed = False
