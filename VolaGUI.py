@@ -3,7 +3,6 @@ import typing
 
 from PyQt6 import QtGui
 import ResultTable
-import ButtonWidget
 import QueueWidget
 import CommandDescription
 import DataHandling
@@ -76,17 +75,39 @@ class MainWindow(QMainWindow):
         #Command Queue Area
         self.layout.addWidget(QueueWidget.Window(), 0, 2,2,1)
 
-        #Queue Command Button
-        #layout.addWidget(Color('yellow'), 1, 2,1,1)
+
+        # Queue Command Button
+        queueBtn = QPushButton(text="Queue Command", parent=self)
+        queueBtn.setAutoFillBackground(True)
+        queueBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        queueBtn.clicked.connect(self.queueBtnClicked)
+
+        # Execute Command Button
+        executeCMDBtn = QPushButton(text="Execute Command", parent=self)
+        executeCMDBtn.setAutoFillBackground(True)
+        executeCMDBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        executeCMDBtn.clicked.connect(self.executeCMDBtnClicked)
+
+        # Execute Queue Button
+        executeQUEBtn = QPushButton(text="Execute Queue", parent=self)
+        executeQUEBtn.setAutoFillBackground(True)
+        executeQUEBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        executeQUEBtn.clicked.connect(self.executeQUEBtnClicked)
+
+        buttons = QVBoxLayout()
+        buttons.addWidget(queueBtn)
+        buttons.addWidget(executeCMDBtn)
+        buttons.addWidget(executeQUEBtn)
+        buttons.setSpacing(0)
 
         #Queue Command Button & Execute Command Button
-        #layout.addWidget(Color('black'), 2, 2,1,1)
-        self.layout.addWidget(ButtonWidget.Window(), 2, 2,1,1)
+        self.layout.addLayout(buttons, 2, 2,1,1)
         
         widget = QWidget()
         widget.setLayout(self.layout)
         self.setCentralWidget(widget)
 
+    # Runs when a command is clicked from the command dropdown menu
     @pyqtSlot(QTreeWidgetItem, int)
     def update_windows(self, it, col):
         command = it.text(col)
@@ -97,11 +118,25 @@ class MainWindow(QMainWindow):
             self.Description.hide()
             self.Description = CommandDescription.Window()
             self.layout.addWidget(self.Description, 0, 1,2,1)
-            self.Results.hide()
-            self.Results = ResultTable.ResultWidget()
-            self.layout.addWidget(self.Results, 3,0, -1, -1, 
-                         alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignVCenter)
         
+    def queueBtnClicked(self):
+        print("Queue Command Button Clicked")
+        if DataHandling.service != None:
+            QueueWidget.add_to_queue(DataHandling.service) # Replace "X" with a variable holding the name of the selected command
+
+    def executeCMDBtnClicked(self):
+        print("Execute Command Button Clicked")
+        self.updateResults()
+
+    def executeQUEBtnClicked(self):
+        print("Execute Queue Button Clicked")
+        QueueWidget.execute_queue()
+
+    def updateResults(self):
+        self.Results.hide()
+        self.Results = ResultTable.ResultWidget()
+        self.layout.addWidget(self.Results, 3,0, -1, -1, 
+                        alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignVCenter)
     
 app = QApplication(sys.argv)
 window = MainWindow()
