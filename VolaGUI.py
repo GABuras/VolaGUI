@@ -136,6 +136,7 @@ class MainWindow(QMainWindow):
                     self.param_lay.itemAt(i).widget().deleteLater()
                 for param in DataHandling.command_data[f"{command}"]["params"]:
                     c = QCheckBox(f"{param}")
+                    c.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
                     self.param_lay.addWidget(c)
             else:
                 self.unsupported_command_error()
