@@ -43,6 +43,7 @@ class MainWindow(QMainWindow):
         self.Results = ResultTable.ResultWidget()
         self.Description = CommandDescription.Window()
 
+        """Tree Selection Commands"""
         tree = QTreeWidget()
         tree.setColumnCount(1)
         tree.setHeaderLabels(["Commands"])
@@ -59,9 +60,12 @@ class MainWindow(QMainWindow):
         tree.itemClicked.connect(self.update_windows)
 
         self.CommandMenu = tree
+        """Tree Selection Commands"""
 
         #Select and Show Command Area 
-        self.layout.addWidget(self.CommandMenu, 0, 0,3,1)
+        self.layout.addWidget(self.CommandMenu, 0, 0,2,1)
+
+        self.layout.addWidget(Color("red"), 2, 0, 1, 1)
 
         # Results Area
         self.layout.addWidget(self.Results, 3,0, -1, -1, 
@@ -97,11 +101,6 @@ class MainWindow(QMainWindow):
             self.Description.hide()
             self.Description = CommandDescription.Window()
             self.layout.addWidget(self.Description, 0, 1,2,1)
-            self.Results.hide()
-            self.Results = ResultTable.ResultWidget()
-            self.layout.addWidget(self.Results, 3,0, -1, -1, 
-                         alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignVCenter)
-        
     
 app = QApplication(sys.argv)
 window = MainWindow()
