@@ -3,11 +3,6 @@ from PyQt6 import QtWidgets
 from PyQt6.QtCore import pyqtSlot
 import DataHandling
 
-commands = {"DLLs": ["dlldump", "dlllist"],
-                "Modules": ["moddump", "modules", "modscan"],
-                "Processes": ["pslist", "psscan", "pstree"],
-                "Registry": ["hivedump", "hivelist", "hivescan"]}
-
 class CommandDropdown(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
@@ -17,16 +12,8 @@ class CommandDropdown(QtWidgets.QWidget):
         tree.setHeaderLabels(["Commands"])
         tree.setSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
 
-        # Command Dropdown List
-        data = {
-            "DLLs": ["dlldump", "dlllist"],
-            "Modules": ["moddump", "modules", "modscan"],
-            "Processes": ["pslist", "psscan", "pstree"],
-            "Registry": ["hivedump", "hivelist", "hivescan"]
-        }
-
         commands = []
-        for key, values in data.items():
+        for key, values in DataHandling.command_list.items():
             command = QtWidgets.QTreeWidgetItem([key])
             for value in values:
                 command_item = QtWidgets.QTreeWidgetItem([value])

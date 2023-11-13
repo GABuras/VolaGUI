@@ -22,5 +22,10 @@ command_data = {
     "rows": count_rows
 }
 
+command_list = {"DLLs": ["dlldump", "dlllist"],
+                "Modules": ["moddump", "modules", "modscan"],
+                "Processes": ["pslist", "psscan", "pstree"],
+                "Registry": ["hivedump", "hivelist", "hivescan"]}
+
 service = None
 service_changed = False

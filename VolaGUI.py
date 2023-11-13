@@ -1,10 +1,13 @@
 import sys
+import typing
+
+from PyQt6 import QtGui
 import ResultTable
 import ButtonWidget
 import QueueWidget
 import CommandDescription
 import DataHandling
-from CommandDropdown_Test import CommandDropdown
+# from CommandDropdown_Test import CommandDropdown
 from PyQt6.QtCore import Qt, pyqtSlot
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
@@ -34,39 +37,71 @@ class MainWindow(QMainWindow):
         self.set_window()
 
     def set_window(self):
-        layout = QGridLayout()
-        layout.setSpacing(1)
+        self.layout = QGridLayout()
+        self.layout.setSpacing(1)
 
-        CommandMenu = CommandDropdown()
-        Results = ResultTable.ResultWidget()
-        Description = CommandDescription.Window()
+        self.Results = ResultTable.ResultWidget()
+        self.Description = CommandDescription.Window()
+
+        tree = QTreeWidget()
+        tree.setColumnCount(1)
+        tree.setHeaderLabels(["Commands"])
+        tree.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+
+        commands = []
+        for key, values in DataHandling.command_list.items():
+            command = QTreeWidgetItem([key])
+            for value in values:
+                command_item = QTreeWidgetItem([value])
+                command.addChild(command_item)
+            commands.append(command)
+        tree.insertTopLevelItems(0, commands)
+        tree.itemClicked.connect(self.update_windows)
+
+        self.CommandMenu = tree
 
         #Select and Show Command Area 
-        layout.addWidget(CommandMenu, 0, 0,3,1)
+        self.layout.addWidget(self.CommandMenu, 0, 0,3,1)
 
         # Results Area
-        layout.addWidget(Results, 3,0, -1, -1, 
+        self.layout.addWidget(self.Results, 3,0, -1, -1, 
                          alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignVCenter)
 
         #Command Description Area
-        layout.addWidget(Description, 0, 1,2,1)
+        self.layout.addWidget(self.Description, 0, 1,2,1)
 
         # Command Building Area
-        layout.addWidget(Color('purple'), 2, 1,1,1)
+        self.layout.addWidget(Color('purple'), 2, 1,1,1)
 
         #Command Queue Area
-        layout.addWidget(QueueWidget.Window(), 0, 2,2,1)
+        self.layout.addWidget(QueueWidget.Window(), 0, 2,2,1)
 
         #Queue Command Button
         #layout.addWidget(Color('yellow'), 1, 2,1,1)
 
         #Queue Command Button & Execute Command Button
         #layout.addWidget(Color('black'), 2, 2,1,1)
-        layout.addWidget(ButtonWidget.Window(), 2, 2,1,1)
-
+        self.layout.addWidget(ButtonWidget.Window(), 2, 2,1,1)
+        
         widget = QWidget()
-        widget.setLayout(layout)
+        widget.setLayout(self.layout)
         self.setCentralWidget(widget)
+
+    @pyqtSlot(QTreeWidgetItem, int)
+    def update_windows(self, it, col):
+        command = it.text(col)
+        if command in ["pslist", "psscan"]:
+            if command is DataHandling.service:
+                return
+            DataHandling.service = command
+            self.Description.hide()
+            self.Description = CommandDescription.Window()
+            self.layout.addWidget(self.Description, 0, 1,2,1)
+            self.Results.hide()
+            self.Results = ResultTable.ResultWidget()
+            self.layout.addWidget(self.Results, 3,0, -1, -1, 
+                         alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignVCenter)
+        
     
 app = QApplication(sys.argv)
 window = MainWindow()
