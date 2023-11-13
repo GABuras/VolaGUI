@@ -22,15 +22,12 @@ class Color(QWidget):
         palette.setColor(QPalette.ColorRole.Window, QColor(color))
         self.setPalette(palette)
 
-commands = {"DLLs": ["dlldump", "dlllist"],
-                "Modules": ["moddump", "modules", "modscan"],
-                "Processes": ["pslist", "psscan", "pstree"],
-                "Registry": ["hivedump", "hivelist", "hivescan"]}
-
 class MainWindow(QMainWindow):
 
     def __init__(self):
         super(MainWindow, self).__init__()
+
+        self.check_boxes: list
 
         self.setWindowTitle("VolaGUI")
         self.set_window()
@@ -64,7 +61,9 @@ class MainWindow(QMainWindow):
         #Select and Show Command Area 
         self.layout.addWidget(self.CommandMenu, 0, 0,2,1)
 
-        self.layout.addWidget(Color("red"), 2, 0, 1, 1)
+
+        self.param_lay = QVBoxLayout()
+        self.layout.addLayout(self.param_lay, 2, 0, 1, 1)
 
         # Results Area
         self.layout.addWidget(self.Results, 3,0, -1, -1, 
@@ -80,6 +79,9 @@ class MainWindow(QMainWindow):
         self.layout.addWidget(QueueWidget.Window(), 0, 2,2,1)
 
 
+        """
+        COMMAND QUEUE AND EXECUTION BUTTONS
+        """
         # Queue Command Button
         queueBtn = QPushButton(text="Queue Command", parent=self)
         queueBtn.setAutoFillBackground(True)
@@ -106,7 +108,11 @@ class MainWindow(QMainWindow):
 
         #Queue Command Button & Execute Command Button
         self.layout.addLayout(buttons, 2, 2,1,1)
+        """
+        COMMAND QUEUE AND EXECUTION BUTTONS
+        """
         
+
         widget = QWidget()
         widget.setLayout(self.layout)
         self.setCentralWidget(widget)
@@ -122,6 +128,12 @@ class MainWindow(QMainWindow):
             self.Description.hide()
             self.Description = CommandDescription.Window()
             self.layout.addWidget(self.Description, 0, 1,2,1)
+            for i in reversed(range(self.param_lay.count())):
+                self.param_lay.itemAt(i).widget().deleteLater()
+            for param in DataHandling.command_data[f"{command}"]["params"]:
+                c = QCheckBox(f"{param}")
+                self.param_lay.addWidget(c)
+                
         
     def queueBtnClicked(self):
         print("Queue Command Button Clicked")
