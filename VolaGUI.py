@@ -132,13 +132,14 @@ class MainWindow(QMainWindow):
                 self.Description.hide()
                 self.Description = CommandDescription.Window()
                 self.layout.addWidget(self.Description, 0, 1,2,1)
+                for i in reversed(range(self.param_lay.count())):
+                    self.param_lay.itemAt(i).widget().deleteLater()
+                for param in DataHandling.command_data[f"{command}"]["params"]:
+                    c = QCheckBox(f"{param}")
+                    self.param_lay.addWidget(c)
             else:
                 self.unsupported_command_error()
-            for i in reversed(range(self.param_lay.count())):
-                self.param_lay.itemAt(i).widget().deleteLater()
-            for param in DataHandling.command_data[f"{command}"]["params"]:
-                c = QCheckBox(f"{param}")
-                self.param_lay.addWidget(c)
+            
                 
         
     def queueBtnClicked(self):

@@ -70,7 +70,7 @@ class ResultWidget(QtWidgets.QWidget):
         # pulls command specific column count
         columns = self.data[service]["columns"]
         #dynamically calculates the length of data in the file
-        rows = self.data[f"service"]["rows"](f"{service}.txt")
+        rows = self.data[f"{service}"]["rows"](f"{service}.txt")
         # established model of data
         self.model = QtGui.QStandardItemModel(rows, columns)
         # sets data model headers
