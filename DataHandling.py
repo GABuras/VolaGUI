@@ -29,6 +29,8 @@ command_list = {"DLLs": ["dlldump", "dlllist"],
                 "Modules": ["moddump", "modules", "modscan"],
                 "Processes": ["pslist", "psscan", "pstree"],
                 "Registry": ["hivedump", "hivelist", "hivescan"]}
+commands = ["dlldump", "dlllist", "moddump", "modules", "modscan", "pslist", "psscan", "pstree", "hivedump", "hivelist", "hivescan"]
+supported_commands = ["pslist", "psscan"]
 
 service = None
 service_changed = False

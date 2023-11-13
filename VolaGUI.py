@@ -22,9 +22,6 @@ class Color(QWidget):
         palette.setColor(QPalette.ColorRole.Window, QColor(color))
         self.setPalette(palette)
 
-commands = ["moddump", "modules", "modscan", "pslist", "psscan", "pstree""hivedump", "hivelist", "hivescan"]
-supported_commands = ["pslist", "psscan"]
-
 class MainWindow(QMainWindow):
 
     def __init__(self):
@@ -124,11 +121,11 @@ class MainWindow(QMainWindow):
     @pyqtSlot(QTreeWidgetItem, int)
     def update_windows(self, it, col):
         command = it.text(col)
-        if command in commands:
+        if command in DataHandling.commands:
             if command is DataHandling.service:
                 return
             DataHandling.service = command
-            if command in supported_commands: 
+            if command in DataHandling.supported_commands: 
                 self.Description.hide()
                 self.Description = CommandDescription.Window()
                 self.layout.addWidget(self.Description, 0, 1,2,1)
@@ -145,12 +142,12 @@ class MainWindow(QMainWindow):
         
     def queueBtnClicked(self):
         print("Queue Command Button Clicked")
-        if DataHandling.service in commands:
+        if DataHandling.service in DataHandling.commands:
             QueueWidget.add_to_queue(DataHandling.service) # Replace "X" with a variable holding the name of the selected command
 
     def executeCMDBtnClicked(self):
         print("Execute Command Button Clicked")
-        if DataHandling.service in supported_commands:
+        if DataHandling.service in DataHandling.supported_commands:
             self.updateResults()
         else:
             self.unsupported_command_error()
