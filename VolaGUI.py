@@ -32,14 +32,14 @@ class MainWindow(QMainWindow):
 
 
         #Select and Show Command Area 
-        layout.addWidget(TreeWidget.Window(), 0, 0,3,1)
+        layout.addWidget(CommandDropdown.TreeWidget(), 0, 0,3,1)
 
         # Results Area
         layout.addWidget(ResultTable.ResultWidget("pslist"), 3,0, -1, -1, 
                          alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignVCenter)
 
         #Command Description Area
-        layout.addWidget(CommandDescription.Window(), 0, 1,2,1)
+        layout.addWidget(CommandDescription.Window("pslist"), 0, 1,2,1)
 
         # Command Building Area
         layout.addWidget(Color('purple'), 2, 1,1,1)

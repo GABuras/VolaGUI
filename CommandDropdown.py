@@ -3,8 +3,8 @@ from PyQt6.QtCore import pyqtSlot
 
 
 class TreeWidget(QTreeWidget):
-    def __init__(self, parent: QWidget | None):
-        super().__init__(parent)
+    def __init__(self):
+        super().__init__()
         
         tree = QTreeWidget()  # add parent here
         tree.setColumnCount(1)
