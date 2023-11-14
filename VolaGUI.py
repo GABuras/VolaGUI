@@ -134,12 +134,19 @@ class MainWindow(QMainWindow):
                 for param in DataHandling.command_data[f"{command}"]["params"]:
                     c = QCheckBox(f"{param}")
                     c.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+                    c.stateChanged.connect(self.get_param)
                     self.param_lay.addWidget(c)
             else:
                 self.unsupported_command_error()
             
-                
-        
+    #HARDCODED
+    def get_param(self):
+        dialog = QInputDialog()
+        dialog.setLabelText("Enter the PID: ")
+        dialog.setInputMode(QInputDialog.InputMode.TextInput)
+        dialog.exec()
+        self.pid = dialog.textValue()
+
     def queueBtnClicked(self):
         print("Queue Command Button Clicked")
         if DataHandling.service in DataHandling.commands:
