@@ -51,6 +51,9 @@ class Window(QWidget):
             CommandInfo.setScaledContents(False)
             CommandInfo.setWordWrap(True) 
 
+        description.setStyleSheet("border: 1px solid black;") 
+        CommandInfo.setStyleSheet("border: 1px solid black;") 
+
         layout.addWidget(description)
             
         layout.addWidget(CommandInfo)

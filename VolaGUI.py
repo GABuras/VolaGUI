@@ -20,6 +20,7 @@ class Color(QWidget):
 
         palette = self.palette()
         palette.setColor(QPalette.ColorRole.Window, QColor(color))
+
         self.setPalette(palette)
 
 class MainWindow(QMainWindow):
@@ -32,6 +33,7 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("VolaGUI")
         self.set_window()
+        #self.setStyleSheet("border: 1px solid black;") 
 
     def set_window(self):
         self.layout = QGridLayout()
@@ -39,6 +41,8 @@ class MainWindow(QMainWindow):
 
         self.Results = ResultTable.ResultWidget()
         self.Description = CommandDescription.Window()
+
+        # self.Results.setStyleSheet("border: 1px solid black;") 
 
         """Tree Selection Commands"""
         tree = QTreeWidget()
@@ -131,6 +135,7 @@ class MainWindow(QMainWindow):
             if command in DataHandling.supported_commands: 
                 self.Description.hide()
                 self.Description = CommandDescription.Window()
+
                 self.layout.addWidget(self.Description, 0, 1,2,1)
                 self.command_string = f'python3 vol3.py -f mem.img windows.{DataHandling.service}' 
                 self.setup_up_command_line_box(self.command_string)
@@ -143,6 +148,8 @@ class MainWindow(QMainWindow):
                     self.param_lay.addWidget(c)
             else:
                 self.unsupported_command_error()
+
+
     #sets up command line header and string
     def setup_up_command_line_box(self, string):
         for i in reversed(range(self.CommandLine.count())):
@@ -187,6 +194,7 @@ class MainWindow(QMainWindow):
     def updateResults(self):
         self.Results.hide()
         self.Results = ResultTable.ResultWidget()
+        self.Results.setStyleSheet("border: 1px solid black;") 
         self.layout.addWidget(self.Results, 3,0, -1, -1, 
                         alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignVCenter)
         
