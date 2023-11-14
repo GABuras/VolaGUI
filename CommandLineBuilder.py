@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLay
 
 # MainWindow class inherits from QWidget
 class CLBuilderWidget(QWidget):
-    def __init__(self):
+    def __init__(self, pid):
         super().__init__()
 
         self.label = QLabel('text goes here')

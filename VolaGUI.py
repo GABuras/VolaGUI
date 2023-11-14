@@ -27,6 +27,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
 
+        self.command_string: str
         self.check_boxes: list
 
         self.setWindowTitle("VolaGUI")
@@ -72,8 +73,10 @@ class MainWindow(QMainWindow):
         #Command Description Area
         self.layout.addWidget(self.Description, 0, 1,2,1)
 
+        self.CommandLine = QVBoxLayout()
+
         # Command Building Area
-        self.layout.addWidget(Color('purple'), 2, 1,1,1)
+        self.layout.addLayout(self.CommandLine, 2, 1,1,1)
 
         #Command Queue Area
         self.layout.addWidget(QueueWidget.Window(), 0, 2,2,1)
@@ -129,6 +132,8 @@ class MainWindow(QMainWindow):
                 self.Description.hide()
                 self.Description = CommandDescription.Window()
                 self.layout.addWidget(self.Description, 0, 1,2,1)
+                self.command_string = f'python3 vol3.py -f mem.img windows.{DataHandling.service}' 
+                self.setup_up_command_line_box(self.command_string)
                 for i in reversed(range(self.param_lay.count())):
                     self.param_lay.itemAt(i).widget().deleteLater()
                 for param in DataHandling.command_data[f"{command}"]["params"]:
@@ -138,7 +143,21 @@ class MainWindow(QMainWindow):
                     self.param_lay.addWidget(c)
             else:
                 self.unsupported_command_error()
-            
+    #sets up command line header and string
+    def setup_up_command_line_box(self, string):
+        for i in reversed(range(self.CommandLine.count())):
+            self.CommandLine.itemAt(i).widget().deleteLater()
+        GUI_Header = QLabel("Command Line Input: ")
+        font = GUI_Header.font()
+        font.setPointSize(20)
+        GUI_Header.setFont(font)
+        self.CommandLine.addWidget(GUI_Header)
+        command_label = QLabel(self.command_string)
+        font = command_label.font()
+        font.setPointSize(15)
+        command_label.setFont(font)
+        self.CommandLine.addWidget(command_label)
+
     #HARDCODED
     def get_param(self):
         dialog = QInputDialog()
@@ -146,6 +165,8 @@ class MainWindow(QMainWindow):
         dialog.setInputMode(QInputDialog.InputMode.TextInput)
         dialog.exec()
         self.pid = dialog.textValue()
+        self.command_string = f"{self.command_string} -p {self.pid}"
+        self.setup_up_command_line_box(self.command_string)
 
     def queueBtnClicked(self):
         print("Queue Command Button Clicked")
