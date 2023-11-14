@@ -139,16 +139,35 @@ class MainWindow(QMainWindow):
                 self.layout.addWidget(self.Description, 0, 1,2,1)
                 self.command_string = f'python3 vol3.py -f mem.img windows.{DataHandling.service}' 
                 self.setup_up_command_line_box(self.command_string)
-                for i in reversed(range(self.param_lay.count())):
-                    self.param_lay.itemAt(i).widget().deleteLater()
-                for param in DataHandling.command_data[f"{command}"]["params"]:
-                    c = QCheckBox(f"{param}")
-                    c.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-                    c.stateChanged.connect(self.get_param)
-                    self.param_lay.addWidget(c)
+                self.setup_parameters(command)
+                # for i in reversed(range(self.param_lay.count())):
+                #     self.param_lay.itemAt(i).widget().deleteLater()
+                # Param_Header = QLabel("Parameters: ")
+                # font = Param_Header.font()
+                # font.setPointSize(20)
+                # Param_Header.setFont(font)
+                # self.param_lay.addWidget(Param_Header)
+                # for param in DataHandling.command_data[f"{command}"]["params"]:
+                #     c = QCheckBox(f"{param}")
+                #     c.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+                #     c.stateChanged.connect(self.get_param)
+                #     self.param_lay.addWidget(c)
             else:
                 self.unsupported_command_error()
 
+    def setup_parameters(self, command):
+        for i in reversed(range(self.param_lay.count())):
+            self.param_lay.itemAt(i).widget().deleteLater()
+        Param_Header = QLabel("Parameters: ")
+        font = Param_Header.font()
+        font.setPointSize(20)
+        Param_Header.setFont(font)
+        self.param_lay.addWidget(Param_Header)
+        for param in DataHandling.command_data[f"{command}"]["params"]:
+            c = QCheckBox(f"{param}")
+            c.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+            c.stateChanged.connect(self.get_param)
+            self.param_lay.addWidget(c)
 
     #sets up command line header and string
     def setup_up_command_line_box(self, string):
