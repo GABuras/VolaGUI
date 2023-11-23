@@ -1,16 +1,294 @@
 import sys
 import typing
 
-from PyQt6 import QtGui
-import ResultTable
-import QueueWidget
-import CommandDescription
+from PyQt6 import QtGui, QtWidgets
+# import ResultTable
+# import QueueWidget
+# import CommandDescription
 import DataHandling
-# from CommandDropdown_Test import CommandDropdown
-from PyQt6.QtCore import Qt, pyqtSlot
+from PyQt6.QtCore import Qt, pyqtSlot, QRect, QSortFilterProxyModel
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 
+
+# _______________________________________________________________________________
+# CommandDecription.py
+
+class CommandDescWindow(QWidget):
+
+    def __init__(self):
+        super().__init__()
+        self.generate_description()
+
+    def generate_description(self):
+        service = DataHandling.service
+        layout = QVBoxLayout()
+        layout.setSpacing(0)
+        self.setLayout(layout)
+
+        header = QLabel(f"Command Description: {service}")
+        font = header.font()
+        font.setPointSize(20)
+        header.setFont(font)
+        header.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+        header.setScaledContents(False)
+        header.setFixedHeight(35)
+        header.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        self.data = DataHandling.command_data
+        headerlayout = QHBoxLayout()
+        headerlayout.addWidget(header)
+        description = QLabel(None)
+        CommandInfo = QLabel(None)
+        
+        layout.addLayout(headerlayout)
+        if service is not None:
+
+            description = QLabel(self.data[service]["description"])
+            font = description.font()
+            font.setPointSize(15)
+            description.setFont(font)
+            description.setAlignment(Qt.AlignmentFlag.AlignLeft)
+            description.setScaledContents(False)
+            description.setWordWrap(True) 
+
+            CommandInfo = QLabel(self.data[service]["info"])
+            font = CommandInfo.font()
+            font.setPointSize(15)
+            CommandInfo.setFont(font)
+            CommandInfo.setAlignment(Qt.AlignmentFlag.AlignLeft)
+            CommandInfo.setScaledContents(False)
+            CommandInfo.setWordWrap(True) 
+
+        description.setStyleSheet("border: 1px solid black;") 
+        CommandInfo.setStyleSheet("border: 1px solid black;") 
+
+        layout.addWidget(description)
+            
+        layout.addWidget(CommandInfo)
+
+
+# _______________________________________________________________________________
+# CommandDropdown.py
+
+class CommandDropdown(QtWidgets.QWidget):
+    def __init__(self):
+        super().__init__()
+        
+        tree = QtWidgets.QTreeWidget()
+        tree.setColumnCount(1)
+        tree.setHeaderLabels(["Commands"])
+        tree.setSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+
+        commands = []
+        for key, values in DataHandling.command_list.items():
+            command = QtWidgets.QTreeWidgetItem([key])
+            for value in values:
+                command_item = QtWidgets.QTreeWidgetItem([value])
+                command.addChild(command_item)
+            commands.append(command)
+        tree.insertTopLevelItems(0, commands)
+        tree.itemClicked.connect(self.onItemClick)
+        self.vBox = QtWidgets.QVBoxLayout()
+        self.setLayout(self.vBox)
+        self.vBox.addWidget(tree)
+        self.vBox.setStretch(1, 0)
+
+    @pyqtSlot(QtWidgets.QTreeWidgetItem, int)
+    def onItemClick(self, it, col):
+        command = it.text(col)
+        if command in ["pslist", "psscan"]:
+            if command is DataHandling.service:
+                return
+            DataHandling.service = command
+            DataHandling.service_changed = True
+
+
+# _______________________________________________________________________________
+# CommandLineBuilder.py
+
+class CLBuilderWidget(QWidget):
+    def __init__(self, pid):
+        super().__init__()
+
+        self.label = QLabel('text goes here')
+
+        # button for testing
+        self.button = QPushButton('press me!')
+        self.button.clicked.connect(self.psscan_cl)
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.label)
+        layout.addWidget(self.button)
+
+        self.setLayout(layout)
+
+    """psscan command line builder function"""
+    def psscan_cl(self):
+        self.label.setText('./vol.py -f mem.img windows.psscan')
+
+    """pslist command line builder function"""
+    def pslist_cl(self, pid=None):
+        self.label.setText('python3 vol.py -f mem.img windows.pslist')
+        if pid is not None:
+            self.label.setText(f'python3 vol.py -f mem.img windows.pslist -p {pid}')
+
+
+# _______________________________________________________________________________
+# QueueWidget.py
+
+class QueueWindow(QWidget):
+
+    def __init__(self,parent=None):
+        super().__init__(parent)
+
+        header = QLabel("Queue:")
+        font = header.font()
+        font.setPointSize(20)
+        header.setFont(font)
+        header.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+        header.setScaledContents(False)
+        # header.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        header.setFixedHeight(35)
+
+        # command = QLineEdit()
+        # command.setPlaceholderText("<Command>")
+        # command.setReadOnly(True)
+        # command.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+
+        headerlayout = QHBoxLayout()
+        headerlayout.addWidget(header)
+        # headerlayout.addWidget(command)
+        
+        global queue # Necessary to allow the button click handling code in ButtonWidget.py to update queue contents. Fix if you know how to
+        queue = QListWidget()
+        # Placeholder text would be ideal, but seems a little complicated, so maybe do later
+        
+        # queue.addItems(["One", "Two", "Three"])
+
+        # queue.currentItemChanged.connect(self.index_changed)
+        # queue.currentTextChanged.connect(self.text_changed)
+        queue.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+
+
+        layout = QVBoxLayout()
+    
+        layout.addLayout(headerlayout)
+
+        layout.addWidget(queue)
+        layout.setSpacing(0)
+
+
+        self.setLayout(layout)
+
+    # def index_changed(self, i): # Not an index, i is a QListWidgetItem
+    #     print(i.text())
+
+    # def text_changed(self, s): # s is a str
+    #     print(s)
+
+def add_to_queue(command: str): # command is the name of the command
+    queue.addItem(command)
+    print("Added " + command + " to queue")
+
+def execute_queue(): 
+    # for command in queue, execute and display results
+    queue.clear()
+    print("Executed queue")
+
+
+# _______________________________________________________________________________
+# ResultTable.py
+
+class ResultWidget(QtWidgets.QWidget):
+    def __init__(self):
+        super().__init__()
+        # self.setWindowTitle("Results")
+        # self.resize(1275, 350)
+        self.CreateTable()
+        # self.show()
+        self.table_view: QtWidgets.QTableView
+        self.filter: QSortFilterProxyModel
+    
+    def CreateTable(self):
+
+        self.vBox = QtWidgets.QVBoxLayout()
+        self.vBox.addStretch(0)
+        self.vBox.setSpacing(0)
+        self.setLayout(self.vBox)
+        self.hBox = QtWidgets.QHBoxLayout()
+        self.hBox.setAlignment(Qt.AlignmentFlag.AlignLeft)
+
+        if DataHandling.service is not None:
+            self.PopulateTable(DataHandling.service)
+            # sets up the filter dropdown based on service headers
+            self.filter_choice = QtWidgets.QComboBox()
+            for headers in self.data[DataHandling.service]["headers"]:
+                self.filter_choice.addItem(headers)
+            # sets up filter based on the table model
+            # created in 'PopulateTable()' 
+            self.filter = QSortFilterProxyModel()
+            self.filter.setSourceModel(self.model)
+            # changes filter choice when something in drop down is selected
+            self.filter_choice.activated.connect(self.set_filter)
+            self.filter_choice.setFixedWidth(250)
+
+            # Creates a search widget using QLineEdit
+            self.searchfield = QtWidgets.QLineEdit()
+            self.searchfield.setFixedWidth(250)
+            self.searchfield.setAlignment(Qt.AlignmentFlag.AlignLeft)
+            self.searchfield.setPlaceholderText("Search...")
+            self.searchfield.setStyleSheet("font-size: 15px; height: 20px;")
+
+            # Connects the filter and the search bar, filtering as text changes
+            self.searchfield.textChanged.connect(self.filter.setFilterFixedString)
+
+             # Established horizontal box for the filter and search widgets
+            # aligning it to the left side
+            self.hBox.addWidget(self.filter_choice)
+            self.hBox.addWidget(self.searchfield)
+
+            # sets up a table view of the model
+            self.table_view = QtWidgets.QTableView()
+            self.table_view.setModel(self.filter)
+            self.table_view.setSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+
+            # dynamically stretches the columns to make them fit the widget
+            for c in range(self.data[DataHandling.service]["columns"]):
+                self.table_view.horizontalHeader().setSectionResizeMode(c, 
+                    QtWidgets.QHeaderView.ResizeMode.Stretch)
+            #self.table_view.setMaximumHeight(175)
+            self.vBox.addLayout(self.hBox)
+            self.vBox.addWidget(self.table_view)
+            
+
+    def PopulateTable(self, service):
+        # grabs the command data dictionary
+        self.data = DataHandling.command_data
+        # pulls command specific column count
+        columns = self.data[service]["columns"]
+        #dynamically calculates the length of data in the file
+        rows = self.data[f"{service}"]["rows"](f"{service}.txt")
+        # established model of data
+        self.model = QtGui.QStandardItemModel(rows, columns)
+        # sets data model headers
+        self.model.setHorizontalHeaderLabels(self.data[service]["headers"])
+
+        # loops through the file to populate the model
+        with open(f"./data/{service}.txt", "r") as file:
+            for r in range(rows):
+                entry = file.readline()
+                column_entries = entry.split(",")
+                for c in range(columns):
+                    item = QtGui.QStandardItem(str(column_entries[c]))
+                    self.model.setItem(r, c, item)
+    
+    # used to set the filter when changed
+    def set_filter(self):
+        self.filter.setFilterKeyColumn(self.filter_choice.currentIndex())
+
+
+# _______________________________________________________________________________
+# VolaGUI.py
 
 class Color(QWidget):
 
@@ -39,8 +317,8 @@ class MainWindow(QMainWindow):
         self.layout = QGridLayout()
         self.layout.setSpacing(1)
 
-        self.Results = ResultTable.ResultWidget()
-        self.Description = CommandDescription.Window()
+        self.Results = ResultWidget()
+        self.Description = CommandDescWindow()
 
         # self.Results.setStyleSheet("border: 1px solid black;") 
 
@@ -83,7 +361,7 @@ class MainWindow(QMainWindow):
         self.layout.addLayout(self.CommandLine, 2, 1,1,1)
 
         #Command Queue Area
-        self.layout.addWidget(QueueWidget.Window(), 0, 2,2,1)
+        self.layout.addWidget(QueueWindow(), 0, 2,2,1)
 
 
         """
@@ -134,7 +412,7 @@ class MainWindow(QMainWindow):
             DataHandling.service = command
             if command in DataHandling.supported_commands: 
                 self.Description.hide()
-                self.Description = CommandDescription.Window()
+                self.Description = CommandDescWindow()
 
                 self.layout.addWidget(self.Description, 0, 1,2,1)
                 self.command_string = f'python3 vol3.py -f mem.img windows.{DataHandling.service}' 
@@ -197,7 +475,7 @@ class MainWindow(QMainWindow):
     def queueBtnClicked(self):
         print("Queue Command Button Clicked")
         if DataHandling.service in DataHandling.commands:
-            QueueWidget.add_to_queue(DataHandling.service) # Replace "X" with a variable holding the name of the selected command
+            add_to_queue(DataHandling.service) # Replace "X" with a variable holding the name of the selected command
 
     def executeCMDBtnClicked(self):
         print("Execute Command Button Clicked")
@@ -208,11 +486,11 @@ class MainWindow(QMainWindow):
 
     def executeQUEBtnClicked(self):
         print("Execute Queue Button Clicked")
-        QueueWidget.execute_queue()
+        execute_queue()
 
     def updateResults(self):
         self.Results.hide()
-        self.Results = ResultTable.ResultWidget()
+        self.Results = ResultWidget()
         self.Results.setStyleSheet("border: 1px solid black;") 
         self.layout.addWidget(self.Results, 3,0, -1, -1, 
                         alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignVCenter)
