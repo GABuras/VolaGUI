@@ -525,7 +525,7 @@ class SetUpWindow(QMainWindow):
 
 
         # Windows Profile Button
-        WindowsBtn = QPushButton(text="Windows", parent=self)
+        WindowsBtn = QPushButton(text="Windows", icon=QIcon("./icons/WindowsIcon.png"), parent=self)
         WindowsBtn.setCheckable(True)
         WindowsBtn.setAutoExclusive(True)
         WindowsBtn.setAutoFillBackground(True)
@@ -533,7 +533,7 @@ class SetUpWindow(QMainWindow):
         WindowsBtn.clicked.connect(self.windowsBtbClicked)
 
         # Mac Profile Button
-        MacBtn = QPushButton(text="Mac", parent=self)
+        MacBtn = QPushButton(text="Mac", icon=QIcon("./icons/MacIcon"), parent=self)
         MacBtn.setCheckable(True)
         MacBtn.setAutoExclusive(True)
         MacBtn.setAutoFillBackground(True)
@@ -541,7 +541,7 @@ class SetUpWindow(QMainWindow):
         MacBtn.clicked.connect(self.macBtbClicked)
 
         # Linux Profile Button
-        LinuxBtn = QPushButton(text="Linux", parent=self)
+        LinuxBtn = QPushButton(text="Linux", icon=QIcon("./icons/LinuxIcon"), parent=self)
         LinuxBtn.setCheckable(True)
         LinuxBtn.setAutoExclusive(True)
         LinuxBtn.setAutoFillBackground(True)
