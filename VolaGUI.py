@@ -518,21 +518,37 @@ class SetUpWindow(QMainWindow):
     def set_window(self):
         self.layout = QVBoxLayout()
 
+        # Welcome to VOLAGUI message
+
+
+        # Select memory image
+
+
+        # Windows Profile Button
         WindowsBtn = QPushButton(text="Windows", parent=self)
+        WindowsBtn.setCheckable(True)
+        WindowsBtn.setAutoExclusive(True)
         WindowsBtn.setAutoFillBackground(True)
         WindowsBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         WindowsBtn.clicked.connect(self.windowsBtbClicked)
 
+        # Mac Profile Button
         MacBtn = QPushButton(text="Mac", parent=self)
+        MacBtn.setCheckable(True)
+        MacBtn.setAutoExclusive(True)
         MacBtn.setAutoFillBackground(True)
         MacBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         MacBtn.clicked.connect(self.macBtbClicked)
 
+        # Linux Profile Button
         LinuxBtn = QPushButton(text="Linux", parent=self)
+        LinuxBtn.setCheckable(True)
+        LinuxBtn.setAutoExclusive(True)
         LinuxBtn.setAutoFillBackground(True)
         LinuxBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         LinuxBtn.clicked.connect(self.linuxBtbClicked)
 
+        # Create display for profile buttons
         profileButtons = QHBoxLayout()
         profileButtons.addWidget(WindowsBtn)
         profileButtons.addWidget(MacBtn)
