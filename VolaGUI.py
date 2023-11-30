@@ -11,6 +11,8 @@ from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 
 
+global window
+
 # _______________________________________________________________________________
 # CommandDecription.py
 
@@ -503,8 +505,69 @@ class MainWindow(QMainWindow):
 
         if button == QMessageBox.StandardButton.Ok:
             print("OK!")
+
+class SetUpWindow(QMainWindow):
     
+    def __init__(self):
+        super(SetUpWindow, self).__init__()
+
+        self.setWindowTitle("VolaGUI Set Up")
+
+        self.set_window()
+
+    def set_window(self):
+        self.layout = QVBoxLayout()
+
+        WindowsBtn = QPushButton(text="Windows", parent=self)
+        WindowsBtn.setAutoFillBackground(True)
+        WindowsBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        WindowsBtn.clicked.connect(self.windowsBtbClicked)
+
+        MacBtn = QPushButton(text="Mac", parent=self)
+        MacBtn.setAutoFillBackground(True)
+        MacBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        MacBtn.clicked.connect(self.macBtbClicked)
+
+        LinuxBtn = QPushButton(text="Linux", parent=self)
+        LinuxBtn.setAutoFillBackground(True)
+        LinuxBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        LinuxBtn.clicked.connect(self.linuxBtbClicked)
+
+        profileButtons = QHBoxLayout()
+        profileButtons.addWidget(WindowsBtn)
+        profileButtons.addWidget(MacBtn)
+        profileButtons.addWidget(LinuxBtn)
+
+        self.layout.addLayout(profileButtons)
+
+        # Start Button
+        startBtn = QPushButton(text="Start", parent=self)
+        startBtn.setAutoFillBackground(True)
+        startBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        startBtn.clicked.connect(self.startBtnClicked)
+
+        self.layout.addWidget(startBtn)
+
+        widget = QWidget()
+        widget.setLayout(self.layout)
+        self.setCentralWidget(widget)
+
+    def windowsBtbClicked(self):
+        print("Windows OS profile selected.")
+
+    def macBtbClicked(self):
+        print("Mac OS profile selected.")
+
+    def linuxBtbClicked(self):
+        print("Linux OS profile selected.")
+
+    def startBtnClicked(self):
+        print("Finished set up.")
+        global window 
+        window = MainWindow()
+        window.showMaximized()
+
 app = QApplication(sys.argv)
-window = MainWindow()
+window = SetUpWindow()
 window.showMaximized()
 app.exec()
