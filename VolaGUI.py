@@ -6,7 +6,7 @@ from PyQt6 import QtGui, QtWidgets
 # import QueueWidget
 # import CommandDescription
 import DataHandling
-from PyQt6.QtCore import Qt, pyqtSlot, QRect, QSortFilterProxyModel
+from PyQt6.QtCore import Qt, pyqtSlot, pyqtSignal, QRect, QSortFilterProxyModel
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 
@@ -70,12 +70,16 @@ class CommandDescFrame(QFrame):
 # _______________________________________________________________________________
 # CommandDropdown.py
 
-class CommandDropdown(QFrame):
+class CommandDropdownFrame(QFrame):
+    commandSelected = pyqtSignal(str)  # Custom signal to notify when a command is selected
+
     def __init__(self):
         super().__init__()
-        self.setStyleSheet("QFrame { border: 1px solid black; }")
-        self.setFixedSize(200, 450)
-        
+        self.setup_dropdown()
+        self.setStyleSheet("QFrame { border: 1px solid black; }")  # Customize the border style if needed
+        self.setFixedSize(200, 300)  # Set your desired width and height
+
+    def setup_dropdown(self):
         tree = QtWidgets.QTreeWidget()
         tree.setColumnCount(1)
         tree.setHeaderLabels(["Commands"])
@@ -89,20 +93,16 @@ class CommandDropdown(QFrame):
                 command.addChild(command_item)
             commands.append(command)
         tree.insertTopLevelItems(0, commands)
-        tree.itemClicked.connect(self.onItemClick)
-        self.vBox = QtWidgets.QVBoxLayout()
-        self.setLayout(self.vBox)
-        self.vBox.addWidget(tree)
-        self.vBox.setStretch(1, 0)
+        tree.itemClicked.connect(self.on_item_click)
+
+        v_box = QtWidgets.QVBoxLayout(self)
+        v_box.addWidget(tree)
+        v_box.setStretch(1, 0)
 
     @pyqtSlot(QtWidgets.QTreeWidgetItem, int)
-    def onItemClick(self, it, col):
+    def on_item_click(self, it, col):
         command = it.text(col)
-        if command in ["pslist", "psscan"]:
-            if command is DataHandling.service:
-                return
-            DataHandling.service = command
-            DataHandling.service_changed = True
+        self.commandSelected.emit(command)
 
 
 # _______________________________________________________________________________
@@ -325,24 +325,24 @@ class MainWindow(QMainWindow):
         # self.Results.setStyleSheet("border: 1px solid black;") 
 
         """Tree Selection Commands"""
-        # tree = QTreeWidget()
-        # tree.setColumnCount(1)
-        # tree.setHeaderLabels(["Commands"])
-        # tree.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        tree = QTreeWidget()
+        tree.setColumnCount(1)
+        tree.setHeaderLabels(["Commands"])
+        tree.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
 
-        # commands = []
-        # for key, values in DataHandling.command_list.items():
-        #     command = QTreeWidgetItem([key])
-        #     for value in values:
-        #         command_item = QTreeWidgetItem([value])
-        #         command.addChild(command_item)
-        #     commands.append(command)
-        # tree.insertTopLevelItems(0, commands)
-        # tree.itemClicked.connect(self.update_windows)
+        commands = []
+        for key, values in DataHandling.command_list.items():
+            command = QTreeWidgetItem([key])
+            for value in values:
+                command_item = QTreeWidgetItem([value])
+                command.addChild(command_item)
+            commands.append(command)
+        tree.insertTopLevelItems(0, commands)
+        tree.itemClicked.connect(self.update_windows)
 
-        # self.CommandMenu = tree
+        self.CommandMenu = tree
         """Tree Selection Commands"""
-        self.CommandMenu = CommandDropdown()
+
         #Select and Show Command Area 
         self.layout.addWidget(self.CommandMenu, 0, 0,2,1)
 
