@@ -138,12 +138,14 @@ class CLBuilderWidget(QWidget):
 # _______________________________________________________________________________
 # QueueWidget.py
 
-class QueueWindow(QWidget):
+class QueueWindow(QFrame):
 
     def __init__(self,parent=None):
         super().__init__(parent)
 
         header = QLabel("Queue:")
+        self.setStyleSheet("QFrame { border: 1px solid black; }")
+        self.setFixedSize(300, 450)
         font = header.font()
         font.setPointSize(20)
         header.setFont(font)
@@ -272,7 +274,7 @@ class ResultFrame(QFrame):
         self.setFrameStyle(QFrame.Shape.Box | QFrame.Shadow.Raised)
         self.setContentsMargins(5, 5, 5, 5)
         self.setStyleSheet("QFrame { border: 1px solid black; }")
-        self.setFixedSize(1600, 250)
+        self.setFixedSize(1585, 250)
 
         # create vertical box layout
         self.v_box = QVBoxLayout(self)
@@ -285,6 +287,23 @@ class ResultFrame(QFrame):
 
 # _______________________________________________________________________________
 # VolaGUI.py
+
+class ParamFrame(QFrame):
+    def __init__(self):
+        super().__init__()
+        self.setFrameStyle(QFrame.Shape.Box | QFrame.Shadow.Raised)
+        self.setContentsMargins(5, 5, 5, 5)
+
+        vBox = QVBoxLayout(self)
+
+        # Create Paramaters
+        param_header = QLabel("Parameters:")
+        font = param_header.font()
+        font.setPointSize(20)
+        param_header.setFont(font)
+        vBox.addWidget(param_header)
+
+        #help
 
 class Color(QWidget):
 
