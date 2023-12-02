@@ -1,4 +1,5 @@
 import sys
+import os
 import typing
 
 from PyQt6 import QtGui, QtWidgets
@@ -553,6 +554,19 @@ class SetUpWindow(QMainWindow):
         self.layout.addLayout(messageLayout)
 
         # Select memory image
+        selectLayout = QHBoxLayout()
+        
+        selectMessage = QLabel("Memory Image:")
+        selectLayout.addWidget(selectMessage)
+
+        imageBtn = QPushButton(text="Select a Memory Image")
+        imageBtn.clicked.connect(self.imageBtnClicked)
+        selectLayout.addWidget(imageBtn)
+
+        self.selectedImage = QLabel("No memory image selected")
+        selectLayout.addWidget(self.selectedImage)
+
+        self.layout.addLayout(selectLayout)
 
 
         # Windows Profile Button
@@ -561,7 +575,7 @@ class SetUpWindow(QMainWindow):
         WindowsBtn.setAutoExclusive(True)
         WindowsBtn.setAutoFillBackground(True)
         WindowsBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-        WindowsBtn.clicked.connect(self.windowsBtbClicked)
+        WindowsBtn.clicked.connect(self.windowsBtnClicked)
 
         # Mac Profile Button
         MacBtn = QPushButton(text="Mac", icon=QIcon("./icons/MacIcon"), parent=self)
@@ -569,7 +583,7 @@ class SetUpWindow(QMainWindow):
         MacBtn.setAutoExclusive(True)
         MacBtn.setAutoFillBackground(True)
         MacBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-        MacBtn.clicked.connect(self.macBtbClicked)
+        MacBtn.clicked.connect(self.macBtnClicked)
 
         # Linux Profile Button
         LinuxBtn = QPushButton(text="Linux", icon=QIcon("./icons/LinuxIcon"), parent=self)
@@ -577,7 +591,7 @@ class SetUpWindow(QMainWindow):
         LinuxBtn.setAutoExclusive(True)
         LinuxBtn.setAutoFillBackground(True)
         LinuxBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-        LinuxBtn.clicked.connect(self.linuxBtbClicked)
+        LinuxBtn.clicked.connect(self.linuxBtnClicked)
 
         # Create display for profile buttons
         profileButtons = QHBoxLayout()
@@ -599,13 +613,28 @@ class SetUpWindow(QMainWindow):
         widget.setLayout(self.layout)
         self.setCentralWidget(widget)
 
-    def windowsBtbClicked(self):
+    def imageBtnClicked(self):
+        print("Select memory image button clicked.")
+        response = self.getFileName()
+
+    def getFileName(self):
+        file_filter = 'Memory Image (*.raw *.vmem *.img)'
+        response = QFileDialog.getOpenFileName(
+            parent=self,
+            caption='Select a memory image',
+            directory=os.getcwd(),
+            filter=file_filter,
+            initialFilter='Memory Image (*.raw *.vmem *.img)'
+        )
+        self.selectedImage.setText(str(response[0]))
+
+    def windowsBtnClicked(self):
         print("Windows OS profile selected.")
 
-    def macBtbClicked(self):
+    def macBtnClicked(self):
         print("Mac OS profile selected.")
 
-    def linuxBtbClicked(self):
+    def linuxBtnClicked(self):
         print("Linux OS profile selected.")
 
     def startBtnClicked(self):
