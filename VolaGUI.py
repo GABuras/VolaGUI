@@ -7,7 +7,7 @@ from PyQt6 import QtGui, QtWidgets
 # import QueueWidget
 # import CommandDescription
 import DataHandling
-from PyQt6.QtCore import Qt, pyqtSlot, pyqtSignal, QRect, QSortFilterProxyModel
+from PyQt6.QtCore import Qt, pyqtSlot, pyqtSignal, QRect, QSortFilterProxyModel, QSize
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 
@@ -545,11 +545,11 @@ class SetUpWindow(QMainWindow):
         messageLayout.addWidget(welcome)
 
         info = QLabel("For more information on how VOLAGUI and Volatility work, visit our Wiki on GitHub: https://github.com/volatilityfoundation/volatility/wiki")
-        infoFont = info.font()
-        infoFont.setPointSize(15)
-        info.setFont(infoFont)
+        regFont = info.font()
+        regFont.setPointSize(15)
+        info.setFont(regFont)
         info.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
-        info.setFixedHeight(30)
+        info.setFixedHeight(100)
         messageLayout.addWidget(info)
 
         self.layout.addLayout(messageLayout)
@@ -559,14 +559,28 @@ class SetUpWindow(QMainWindow):
 
         selectLayout = QHBoxLayout()
         
+        spacing = QLabel("")
+        spacing.setFixedWidth(100)
+        spacing.setFixedHeight(100)
+        selectLayout.addWidget(spacing)
+
         selectMessage = QLabel("Memory Image:")
+        selectMessage.setFont(regFont)
+        selectMessage.setFixedWidth(150)
+        selectMessage.setFixedHeight(100)
         selectLayout.addWidget(selectMessage)
 
         imageBtn = QPushButton(text="Select a Memory Image")
         imageBtn.clicked.connect(self.imageBtnClicked)
+        imageBtn.setFixedWidth(250)
+        imageBtn.setFixedHeight(50)
+
         selectLayout.addWidget(imageBtn)
 
         self.selectedImage = QLabel("No memory image selected")
+        self.selectedImage.setFont(regFont)
+        self.selectedImage.setFixedHeight(100)
+
         selectLayout.addWidget(self.selectedImage)
 
         self.layout.addLayout(selectLayout)
@@ -575,19 +589,25 @@ class SetUpWindow(QMainWindow):
         # Windows Profile Button
         self.profileSelectedFlag = False
 
-        WindowsBtn = QPushButton(text="Windows", icon=QIcon("./icons/WindowsIcon.png"), parent=self)
+        WindowsBtn = QPushButton(text="   Windows", icon=QIcon("./icons/WindowsIcon.png"), parent=self)
         WindowsBtn.setCheckable(True)
         WindowsBtn.setAutoExclusive(True)
         WindowsBtn.setAutoFillBackground(True)
         WindowsBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        WindowsBtn.setIconSize(QSize(150,150))
+        profileBtnFont = WindowsBtn.font()
+        profileBtnFont.setPointSize(30)
+        WindowsBtn.setFont(profileBtnFont)
         WindowsBtn.clicked.connect(self.windowsBtnClicked)
 
         # Mac Profile Button
-        MacBtn = QPushButton(text="Mac", icon=QIcon("./icons/MacIcon"), parent=self)
+        MacBtn = QPushButton(text=" Mac", icon=QIcon("./icons/MacIcon"), parent=self)
         MacBtn.setCheckable(True)
         MacBtn.setAutoExclusive(True)
         MacBtn.setAutoFillBackground(True)
         MacBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        MacBtn.setIconSize(QSize(150,150))
+        MacBtn.setFont(profileBtnFont)
         MacBtn.clicked.connect(self.macBtnClicked)
 
         # Linux Profile Button
@@ -596,6 +616,8 @@ class SetUpWindow(QMainWindow):
         LinuxBtn.setAutoExclusive(True)
         LinuxBtn.setAutoFillBackground(True)
         LinuxBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        LinuxBtn.setIconSize(QSize(200,200))
+        LinuxBtn.setFont(profileBtnFont)
         LinuxBtn.clicked.connect(self.linuxBtnClicked)
 
         # Create display for profile buttons
@@ -610,6 +632,8 @@ class SetUpWindow(QMainWindow):
         startBtn = QPushButton(text="Start", parent=self)
         startBtn.setAutoFillBackground(True)
         startBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        startBtn.setFont(profileBtnFont)
+        startBtn.setFixedHeight(150)
         startBtn.clicked.connect(self.startBtnClicked)
 
         self.layout.addWidget(startBtn)
@@ -622,8 +646,10 @@ class SetUpWindow(QMainWindow):
         print("Select memory image button clicked.")
         response = self.getFileName()
         if response[0] != "":
+            self.selectedImage.setText(str(response[0]))
             self.imageSelectedFlag = True
         else:
+            self.selectedImage.setText("No memory image selected")
             self.imageSelectedFlag = False
 
     def getFileName(self):
@@ -635,7 +661,6 @@ class SetUpWindow(QMainWindow):
             filter=file_filter,
             initialFilter='Memory Image (*.raw *.vmem *.img)'
         )
-        self.selectedImage.setText(str(response[0]))
         return response
 
     def windowsBtnClicked(self):
