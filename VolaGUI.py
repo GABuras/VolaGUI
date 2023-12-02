@@ -21,7 +21,7 @@ class CommandDescFrame(QFrame):
         super().__init__()
         self.generate_description()
         self.setStyleSheet("QFrame { border: 1px solid black; border-style: outset;}")
-        self.setFixedSize(700, 450)
+        self.setFixedSize(1100, 450)
 
     def generate_description(self):
         service = DataHandling.service
