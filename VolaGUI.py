@@ -20,7 +20,7 @@ class CommandDescFrame(QFrame):
     def __init__(self):
         super().__init__()
         self.generate_description()
-        self.setStyleSheet("QFrame { border: 1px solid black; }")
+        self.setStyleSheet("QFrame { border: 1px solid black; border-style: outset;}")
         self.setFixedSize(700, 450)
 
     def generate_description(self):
@@ -70,9 +70,11 @@ class CommandDescFrame(QFrame):
 # _______________________________________________________________________________
 # CommandDropdown.py
 
-class CommandDropdown(QtWidgets.QWidget):
+class CommandDropdown(QFrame):
     def __init__(self):
         super().__init__()
+        self.setStyleSheet("QFrame { border: 1px solid black; }")
+        self.setFixedSize(200, 450)
         
         tree = QtWidgets.QTreeWidget()
         tree.setColumnCount(1)
@@ -323,24 +325,24 @@ class MainWindow(QMainWindow):
         # self.Results.setStyleSheet("border: 1px solid black;") 
 
         """Tree Selection Commands"""
-        tree = QTreeWidget()
-        tree.setColumnCount(1)
-        tree.setHeaderLabels(["Commands"])
-        tree.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        # tree = QTreeWidget()
+        # tree.setColumnCount(1)
+        # tree.setHeaderLabels(["Commands"])
+        # tree.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
 
-        commands = []
-        for key, values in DataHandling.command_list.items():
-            command = QTreeWidgetItem([key])
-            for value in values:
-                command_item = QTreeWidgetItem([value])
-                command.addChild(command_item)
-            commands.append(command)
-        tree.insertTopLevelItems(0, commands)
-        tree.itemClicked.connect(self.update_windows)
+        # commands = []
+        # for key, values in DataHandling.command_list.items():
+        #     command = QTreeWidgetItem([key])
+        #     for value in values:
+        #         command_item = QTreeWidgetItem([value])
+        #         command.addChild(command_item)
+        #     commands.append(command)
+        # tree.insertTopLevelItems(0, commands)
+        # tree.itemClicked.connect(self.update_windows)
 
-        self.CommandMenu = tree
+        # self.CommandMenu = tree
         """Tree Selection Commands"""
-
+        self.CommandMenu = CommandDropdown()
         #Select and Show Command Area 
         self.layout.addWidget(self.CommandMenu, 0, 0,2,1)
 
