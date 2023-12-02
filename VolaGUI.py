@@ -16,17 +16,17 @@ global window
 # _______________________________________________________________________________
 # CommandDecription.py
 
-class CommandDescWindow(QWidget):
-
+class CommandDescFrame(QFrame):
     def __init__(self):
         super().__init__()
         self.generate_description()
+        self.setStyleSheet("QFrame { border: 1px solid black; }")
+        self.setFixedSize(700, 450)
 
     def generate_description(self):
         service = DataHandling.service
-        layout = QVBoxLayout()
-        layout.setSpacing(0)
-        self.setLayout(layout)
+        self.layout = QVBoxLayout(self)
+        self.layout.setSpacing(0)
 
         header = QLabel(f"Command Description: {service}")
         font = header.font()
@@ -41,17 +41,16 @@ class CommandDescWindow(QWidget):
         headerlayout.addWidget(header)
         description = QLabel(None)
         CommandInfo = QLabel(None)
-        
-        layout.addLayout(headerlayout)
-        if service is not None:
 
+        self.layout.addLayout(headerlayout)
+        if service is not None:
             description = QLabel(self.data[service]["description"])
             font = description.font()
             font.setPointSize(15)
             description.setFont(font)
             description.setAlignment(Qt.AlignmentFlag.AlignLeft)
             description.setScaledContents(False)
-            description.setWordWrap(True) 
+            description.setWordWrap(True)
 
             CommandInfo = QLabel(self.data[service]["info"])
             font = CommandInfo.font()
@@ -59,14 +58,13 @@ class CommandDescWindow(QWidget):
             CommandInfo.setFont(font)
             CommandInfo.setAlignment(Qt.AlignmentFlag.AlignLeft)
             CommandInfo.setScaledContents(False)
-            CommandInfo.setWordWrap(True) 
+            CommandInfo.setWordWrap(True)
 
-        description.setStyleSheet("border: 1px solid black;") 
-        CommandInfo.setStyleSheet("border: 1px solid black;") 
+        # description.setStyleSheet("border: 1px solid black;")
+        # CommandInfo.setStyleSheet("border: 1px solid black;")
 
-        layout.addWidget(description)
-            
-        layout.addWidget(CommandInfo)
+        self.layout.addWidget(description)
+        self.layout.addWidget(CommandInfo)
 
 
 # _______________________________________________________________________________
@@ -320,7 +318,7 @@ class MainWindow(QMainWindow):
         self.layout.setSpacing(1)
 
         self.Results = ResultWidget()
-        self.Description = CommandDescWindow()
+        self.Description = CommandDescFrame()
 
         # self.Results.setStyleSheet("border: 1px solid black;") 
 
@@ -414,7 +412,7 @@ class MainWindow(QMainWindow):
             DataHandling.service = command
             if command in DataHandling.supported_commands: 
                 self.Description.hide()
-                self.Description = CommandDescWindow()
+                self.Description = CommandDescFrame()
 
                 self.layout.addWidget(self.Description, 0, 1,2,1)
                 self.command_string = f'python3 vol3.py -f mem.img windows.{DataHandling.service}' 
