@@ -538,9 +538,16 @@ class SetUpWindow(QMainWindow):
         welcomeFont = welcome.font()
         welcomeFont.setPointSize(45)
         welcome.setFont(welcomeFont)
+        welcome.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
+        welcome.setFixedHeight(60)
         messageLayout.addWidget(welcome)
 
         info = QLabel("For more information on how VOLAGUI and Volatility work, visit our Wiki on GitHub: https://github.com/volatilityfoundation/volatility/wiki")
+        infoFont = info.font()
+        infoFont.setPointSize(15)
+        info.setFont(infoFont)
+        info.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
+        info.setFixedHeight(30)
         messageLayout.addWidget(info)
 
         self.layout.addLayout(messageLayout)
