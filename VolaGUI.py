@@ -519,7 +519,18 @@ class SetUpWindow(QMainWindow):
         self.layout = QVBoxLayout()
 
         # Welcome to VOLAGUI message
+        messageLayout = QVBoxLayout()
 
+        welcome = QLabel("Welcome to VOLAGUI")
+        welcomeFont = welcome.font()
+        welcomeFont.setPointSize(45)
+        welcome.setFont(welcomeFont)
+        messageLayout.addWidget(welcome)
+
+        info = QLabel("For more information on how VOLAGUI and Volatility work, visit our Wiki on GitHub: https://github.com/volatilityfoundation/volatility/wiki")
+        messageLayout.addWidget(info)
+
+        self.layout.addLayout(messageLayout)
 
         # Select memory image
 
