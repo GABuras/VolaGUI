@@ -512,6 +512,7 @@ class MainWindow(QMainWindow):
                         alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignVCenter)
         
     def unsupported_command_error(self):
+        print("Unsupported command error.")
         dlg = QMessageBox(self)
         dlg.setWindowTitle("ERROR")
         dlg.setText("Command not yet supported.")
@@ -554,6 +555,8 @@ class SetUpWindow(QMainWindow):
         self.layout.addLayout(messageLayout)
 
         # Select memory image
+        self.imageSelectedFlag = False
+
         selectLayout = QHBoxLayout()
         
         selectMessage = QLabel("Memory Image:")
@@ -570,6 +573,8 @@ class SetUpWindow(QMainWindow):
 
 
         # Windows Profile Button
+        self.profileSelectedFlag = False
+
         WindowsBtn = QPushButton(text="Windows", icon=QIcon("./icons/WindowsIcon.png"), parent=self)
         WindowsBtn.setCheckable(True)
         WindowsBtn.setAutoExclusive(True)
@@ -616,6 +621,10 @@ class SetUpWindow(QMainWindow):
     def imageBtnClicked(self):
         print("Select memory image button clicked.")
         response = self.getFileName()
+        if response[0] != "":
+            self.imageSelectedFlag = True
+        else:
+            self.imageSelectedFlag = False
 
     def getFileName(self):
         file_filter = 'Memory Image (*.raw *.vmem *.img)'
@@ -627,21 +636,38 @@ class SetUpWindow(QMainWindow):
             initialFilter='Memory Image (*.raw *.vmem *.img)'
         )
         self.selectedImage.setText(str(response[0]))
+        return response
 
     def windowsBtnClicked(self):
         print("Windows OS profile selected.")
+        self.profileSelectedFlag = True
 
     def macBtnClicked(self):
         print("Mac OS profile selected.")
+        self.profileSelectedFlag = True
 
     def linuxBtnClicked(self):
         print("Linux OS profile selected.")
+        self.profileSelectedFlag = True
 
     def startBtnClicked(self):
-        print("Finished set up.")
-        global window 
-        window = MainWindow()
-        window.showMaximized()
+        print("Start button clicked.")
+        if self.imageSelectedFlag == True and self.profileSelectedFlag == True:
+            global window 
+            window = MainWindow()
+            window.showMaximized()
+        else:
+            self.must_select_error()
+
+    def must_select_error(self):
+        print("Must choose a memory image and a profile to continue.")
+        dlg = QMessageBox(self)
+        dlg.setWindowTitle("ERROR")
+        dlg.setText("Must select a memory image and a profile.")
+        button = dlg.exec()
+
+        if button == QMessageBox.StandardButton.Ok:
+            print("OK!")
 
 app = QApplication(sys.argv)
 window = SetUpWindow()
