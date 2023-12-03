@@ -13,7 +13,7 @@ from PyQt6.QtWidgets import *
 
 
 global window
-
+# setting up connection comment
 # _______________________________________________________________________________
 # CommandDecription.py
 
