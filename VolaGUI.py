@@ -166,6 +166,11 @@ class QueueWindow(QFrame):
         
         global queue # Necessary to allow the button click handling code in ButtonWidget.py to update queue contents. Fix if you know how to
         queue = QListWidget()
+
+        font = queue.font()
+        font.setPointSize(15)
+        queue.setFont(font)
+        
         # Placeholder text would be ideal, but seems a little complicated, so maybe do later
         
         # queue.addItems(["One", "Two", "Three"])
@@ -388,18 +393,23 @@ class MainWindow(QMainWindow):
         queueBtn.setAutoFillBackground(True)
         queueBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         queueBtn.clicked.connect(self.queueBtnClicked)
+        font = queueBtn.font()
+        font.setPointSize(15)
+        queueBtn.setFont(font)
 
         # Execute Command Button
         executeCMDBtn = QPushButton(text="Execute Command", parent=self)
         executeCMDBtn.setAutoFillBackground(True)
         executeCMDBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         executeCMDBtn.clicked.connect(self.executeCMDBtnClicked)
+        executeCMDBtn.setFont(font)
 
         # Execute Queue Button
         executeQUEBtn = QPushButton(text="Execute Queue", parent=self)
         executeQUEBtn.setAutoFillBackground(True)
         executeQUEBtn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         executeQUEBtn.clicked.connect(self.executeQUEBtnClicked)
+        executeQUEBtn.setFont(font)
 
         buttons = QVBoxLayout()
         buttons.addWidget(queueBtn)
@@ -473,6 +483,8 @@ class MainWindow(QMainWindow):
             paramLabel = QLabel(f"{param}")
             paramLabel.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
             paramLabel.setFixedWidth(50)
+            font.setPointSize(15)
+            paramLabel.setFont(font)
             paramLayout.addWidget(paramLabel)
 
             self.paramEditBox = QLineEdit()
