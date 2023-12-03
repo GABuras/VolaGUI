@@ -585,6 +585,13 @@ class SetUpWindow(QMainWindow):
 
         self.layout.addLayout(selectLayout)
 
+        # Select Profile
+        selectProfileMessage = QLabel("Select the Memory Image Type: ")
+        selectProfileMessage.setFont(regFont)
+        selectProfileMessage.setFixedHeight(30)
+        self.layout.addWidget(selectProfileMessage)
+
+        # Select Profile Buttons
 
         # Windows Profile Button
         self.profileSelectedFlag = False
