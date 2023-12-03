@@ -100,7 +100,7 @@ command_data = {
         "description":"Scans for registry hives present in a particular windows memory image",
         "info": "Volatility 3 Framework 2.5.0 \nusage: volatility windows.registry.hivescan.HiveScan [-h] \noptional arguments: \n-h, --help  show this help message and exit "
     },
-    
+
 
 
 }
