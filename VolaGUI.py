@@ -432,7 +432,8 @@ class MainWindow(QMainWindow):
 
                 self.layout.addWidget(self.Description, 0, 1,2,1)
                 self.command_string = f'python3 vol3.py -f mem.img windows.{DataHandling.service}' 
-                self.setup_up_command_line_box(self.command_string)
+                self.command_parameters = ""
+                self.setup_up_command_line_box()
                 self.setup_parameters(command)
                 # for i in reversed(range(self.param_lay.count())):
                 #     self.param_lay.itemAt(i).widget().deleteLater()
@@ -451,20 +452,35 @@ class MainWindow(QMainWindow):
 
     def setup_parameters(self, command):
         for i in reversed(range(self.param_lay.count())):
-            self.param_lay.itemAt(i).widget().deleteLater()
+            if i == 0:
+                self.param_lay.itemAt(i).widget().deleteLater()
+            else:
+                self.param_lay.itemAt(i).layout().deleteLater()
         Param_Header = QLabel("Parameters: ")
         font = Param_Header.font()
         font.setPointSize(20)
         Param_Header.setFont(font)
+        # Param_Header.setFixedHeight(30)
         self.param_lay.addWidget(Param_Header)
         for param in DataHandling.command_data[f"{command}"]["params"]:
-            c = QCheckBox(f"{param}")
-            c.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-            c.stateChanged.connect(self.get_param)
-            self.param_lay.addWidget(c)
+            # c = QCheckBox(f"{param}")
+            # c.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+            # c.stateChanged.connect(self.get_param)
+            # self.param_lay.addWidget(c)
+            paramLayout = QHBoxLayout()
+            
+            paramLabel = QLabel(f"{param}")
+            paramLabel.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+            paramLayout.addWidget(paramLabel)
+
+            self.paramEditBox = QLineEdit()
+            self.paramEditBox.textChanged.connect(self.update_param)
+            paramLayout.addWidget(self.paramEditBox)
+
+            self.param_lay.addLayout(paramLayout)
 
     #sets up command line header and string
-    def setup_up_command_line_box(self, string):
+    def setup_up_command_line_box(self):
         for i in reversed(range(self.CommandLine.count())):
             self.CommandLine.itemAt(i).widget().deleteLater()
         GUI_Header = QLabel("Command Line Input: ")
@@ -472,21 +488,29 @@ class MainWindow(QMainWindow):
         font.setPointSize(20)
         GUI_Header.setFont(font)
         self.CommandLine.addWidget(GUI_Header)
-        command_label = QLabel(self.command_string)
+        command_label = QLabel(self.command_string + self.command_parameters)
         font = command_label.font()
         font.setPointSize(15)
         command_label.setFont(font)
         self.CommandLine.addWidget(command_label)
 
     #HARDCODED
-    def get_param(self):
-        dialog = QInputDialog()
-        dialog.setLabelText("Enter the PID: ")
-        dialog.setInputMode(QInputDialog.InputMode.TextInput)
-        dialog.exec()
-        self.pid = dialog.textValue()
-        self.command_string = f"{self.command_string} -p {self.pid}"
-        self.setup_up_command_line_box(self.command_string)
+    # def get_param(self):
+    #     dialog = QInputDialog()
+    #     dialog.setLabelText("Enter the PID: ")
+    #     dialog.setInputMode(QInputDialog.InputMode.TextInput)
+    #     dialog.exec()
+    #     self.pid = dialog.textValue()
+    #     self.command_string = f"{self.command_string} -p {self.pid}"
+    #     self.setup_up_command_line_box(self.command_string)
+
+    #HARDCODED
+    def update_param(self):
+        if self.paramEditBox.text() != "":
+            self.command_parameters = " -p " + str(self.paramEditBox.text())
+        else:
+            self.command_parameters = ""
+        self.setup_up_command_line_box()
 
     def queueBtnClicked(self):
         print("Queue Command Button Clicked")
