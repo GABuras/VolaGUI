@@ -457,10 +457,11 @@ class MainWindow(QMainWindow):
             else:
                 self.param_lay.itemAt(i).layout().deleteLater()
         Param_Header = QLabel("Parameters: ")
+        Param_Header.setAlignment(Qt.AlignmentFlag.AlignTop)
         font = Param_Header.font()
         font.setPointSize(20)
         Param_Header.setFont(font)
-        # Param_Header.setFixedHeight(30)
+        
         self.param_lay.addWidget(Param_Header)
         for param in DataHandling.command_data[f"{command}"]["params"]:
             # c = QCheckBox(f"{param}")
@@ -471,12 +472,16 @@ class MainWindow(QMainWindow):
             
             paramLabel = QLabel(f"{param}")
             paramLabel.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+            paramLabel.setFixedWidth(50)
             paramLayout.addWidget(paramLabel)
 
             self.paramEditBox = QLineEdit()
             self.paramEditBox.textChanged.connect(self.update_param)
+            self.paramEditBox.setFixedWidth(175)
+            self.paramEditBox.setAlignment(Qt.AlignmentFlag.AlignLeft)
             paramLayout.addWidget(self.paramEditBox)
 
+            paramLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
             self.param_lay.addLayout(paramLayout)
 
     #sets up command line header and string
@@ -487,11 +492,13 @@ class MainWindow(QMainWindow):
         font = GUI_Header.font()
         font.setPointSize(20)
         GUI_Header.setFont(font)
+        GUI_Header.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.CommandLine.addWidget(GUI_Header)
         command_label = QLabel(self.command_string + self.command_parameters)
         font = command_label.font()
         font.setPointSize(15)
         command_label.setFont(font)
+        command_label.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.CommandLine.addWidget(command_label)
 
     #HARDCODED
