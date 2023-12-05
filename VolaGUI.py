@@ -22,7 +22,7 @@ class CommandDescFrame(QFrame):
         super().__init__()
         self.generate_description()
         self.setStyleSheet("QFrame { border: 1px solid black; border-style: outset;}")
-        self.setFixedSize(1100, 450)
+        self.setFixedSize(900, 450)
 
     def generate_description(self):
         service = DataHandling.service
@@ -280,7 +280,7 @@ class ResultFrame(QFrame):
         self.setFrameStyle(QFrame.Shape.Box | QFrame.Shadow.Raised)
         self.setContentsMargins(5, 5, 5, 5)
         self.setStyleSheet("QFrame { border: 1px solid black; }")
-        self.setFixedSize(1585, 250)
+        self.setFixedHeight(250)
 
         # create vertical box layout
         self.v_box = QVBoxLayout(self)
@@ -293,23 +293,6 @@ class ResultFrame(QFrame):
 
 # _______________________________________________________________________________
 # VolaGUI.py
-
-class ParamFrame(QFrame):
-    def __init__(self):
-        super().__init__()
-        self.setFrameStyle(QFrame.Shape.Box | QFrame.Shadow.Raised)
-        self.setContentsMargins(5, 5, 5, 5)
-
-        vBox = QVBoxLayout(self)
-
-        # Create Paramaters
-        param_header = QLabel("Parameters:")
-        font = param_header.font()
-        font.setPointSize(20)
-        param_header.setFont(font)
-        vBox.addWidget(param_header)
-
-        #help
 
 class Color(QWidget):
 
@@ -439,24 +422,11 @@ class MainWindow(QMainWindow):
             if command in DataHandling.supported_commands: 
                 self.Description.hide()
                 self.Description = CommandDescFrame()
-
                 self.layout.addWidget(self.Description, 0, 1,2,1)
                 self.command_string = f'python3 vol3.py -f mem.img windows.{DataHandling.service}' 
                 self.command_parameters = ""
                 self.setup_up_command_line_box()
                 self.setup_parameters(command)
-                # for i in reversed(range(self.param_lay.count())):
-                #     self.param_lay.itemAt(i).widget().deleteLater()
-                # Param_Header = QLabel("Parameters: ")
-                # font = Param_Header.font()
-                # font.setPointSize(20)
-                # Param_Header.setFont(font)
-                # self.param_lay.addWidget(Param_Header)
-                # for param in DataHandling.command_data[f"{command}"]["params"]:
-                #     c = QCheckBox(f"{param}")
-                #     c.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-                #     c.stateChanged.connect(self.get_param)
-                #     self.param_lay.addWidget(c)
             else:
                 self.unsupported_command_error()
 
