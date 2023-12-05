@@ -218,6 +218,7 @@ class ResultWidget(QtWidgets.QWidget):
 
     def CreateTable(self):
         self.vBox = QtWidgets.QVBoxLayout()
+        self.smallVBox = QtWidgets.QVBoxLayout()
         self.vBox.addStretch(0)
         self.vBox.setSpacing(0)
         self.setLayout(self.vBox)
@@ -226,6 +227,12 @@ class ResultWidget(QtWidgets.QWidget):
 
         if DataHandling.service is not None:
             self.PopulateTable(DataHandling.service)
+            self.label = QLabel(f"{DataHandling.service} Results:")
+            self.label.setFixedWidth(150)
+            self.label.setStyleSheet("border: 0px;")
+            font = QFont()
+            font.setPointSize(16)
+            self.label.setFont(font)
             self.filter_choice = QtWidgets.QComboBox()
             for headers in self.data[DataHandling.service]["headers"]:
                 self.filter_choice.addItem(headers)
@@ -242,6 +249,8 @@ class ResultWidget(QtWidgets.QWidget):
 
             self.searchfield.textChanged.connect(self.filter.setFilterFixedString)
 
+            self.smallVBox.addWidget(self.label)
+            
             self.hBox.addWidget(self.filter_choice)
             self.hBox.addWidget(self.searchfield)
 
@@ -252,7 +261,8 @@ class ResultWidget(QtWidgets.QWidget):
             for c in range(self.data[DataHandling.service]["columns"]):
                 self.table_view.horizontalHeader().setSectionResizeMode(c, 
                     QtWidgets.QHeaderView.ResizeMode.Stretch)
-            self.vBox.addLayout(self.hBox)
+            self.smallVBox.addLayout(self.hBox)
+            self.vBox.addLayout(self.smallVBox)
             self.vBox.addWidget(self.table_view)
 
     def PopulateTable(self, service):
