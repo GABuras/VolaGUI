@@ -15,10 +15,9 @@ command_data = {
         "info": ""
     },
     "dlllist" : {
-        "columns": 12,
+        "columns": 9,
         "rows": count_rows,
-        "headers": ["PID","PPID","ImageFileName","Offset(V)","Threads","Handles","SessionId","Wow64"
-                    ,"CreateTime","ExitTime","File","output"],
+        "headers": ["PID", "Process", "Base", "Size", "Name", "Path", "LoadTime","File", "output"],
         "params": [],
         "description":"Lists the loaded modules in a particular windows memory image",
         "info": "Volatility 3 Framework 2.5.0\nusage: volatility windows.dlllist.DllList [-h] [--pid [PID ...]] [--dump]\noptional arguments:\n-h, --help       show this help message and exit \n--pid [PID ...]  Process IDs to include (all other processes are excluded) \n--dump           Extract listed DLLs"
@@ -111,7 +110,7 @@ command_list = {"DLLs": ["dlldump", "dlllist"],
                 "Registry": ["hivedump", "hivelist", "hivescan"]}
 commands = ["dlldump", "dlllist", "moddump", "modules", "modscan", "pslist", "psscan", "pstree", "hivedump", "hivelist", "hivescan"]
 #supported_commands = ["pslist", "psscan"]
-supported_commands = ["dlldump", "dlllist", "moddump", "modules", "modscan", "pslist", "psscan", "pstree", "hivedump", "hivelist", "hivescan"]
+supported_commands = ["dlllist", "modules", "modscan", "pslist", "psscan", "hivelist", "hivescan"]
 
 service = None
 service_changed = False
