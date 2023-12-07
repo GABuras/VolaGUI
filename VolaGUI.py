@@ -445,6 +445,8 @@ class MainWindow(QMainWindow):
             if i == 0:
                 self.param_lay.itemAt(i).widget().deleteLater()
             else:
+                for j in reversed(range(self.param_lay.itemAt(i).layout().count())):
+                    self.param_lay.itemAt(i).layout().itemAt(j).widget().deleteLater()
                 self.param_lay.itemAt(i).layout().deleteLater()
         Param_Header = QLabel("Parameters: ")
         Param_Header.setAlignment(Qt.AlignmentFlag.AlignTop)
