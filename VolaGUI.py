@@ -435,7 +435,7 @@ class MainWindow(QMainWindow):
                 self.layout.addWidget(self.Description, 0, 1,2,1)
                 self.command_string = f'python3 vol3.py -f mem.img windows.{DataHandling.service}' 
                 self.command_parameters = ""
-                self.setup_up_command_line_box()
+                self.setup_command_line_box()
                 self.setup_parameters(command)
             else:
                 self.unsupported_command_error()
@@ -482,7 +482,7 @@ class MainWindow(QMainWindow):
             self.param_lay.addLayout(paramLayout)
 
     #sets up command line header and string
-    def setup_up_command_line_box(self):
+    def setup_command_line_box(self):
         for i in reversed(range(self.CommandLine.count())):
             self.CommandLine.itemAt(i).widget().deleteLater()
         GUI_Header = QLabel("Command Line Input: ")
@@ -506,7 +506,7 @@ class MainWindow(QMainWindow):
     #     dialog.exec()
     #     self.pid = dialog.textValue()
     #     self.command_string = f"{self.command_string} -p {self.pid}"
-    #     self.setup_up_command_line_box(self.command_string)
+    #     self.setup_command_line_box(self.command_string)
 
     #HARDCODED
     def update_param(self):
@@ -514,7 +514,7 @@ class MainWindow(QMainWindow):
             self.command_parameters = " -p " + str(self.paramEditBox.text())
         else:
             self.command_parameters = ""
-        self.setup_up_command_line_box()
+        self.setup_command_line_box()
 
     def queueBtnClicked(self):
         print("Queue Command Button Clicked")

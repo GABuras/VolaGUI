@@ -19,7 +19,7 @@ command_data = {
         "rows": count_rows,
         "headers": ["PID", "Process", "Base", "Size", "Name", "Path", "LoadTime","File", "output"],
         "params": [],
-        "description":"Lists the loaded modules in a particular windows memory image",
+        "description":"\nLists the loaded modules in a particular windows memory image",
         "info": "Volatility 3 Framework 2.5.0\nusage: volatility windows.dlllist.DllList [-h] [--pid [PID ...]] [--dump]\noptional arguments:\n-h, --help       show this help message and exit \n--pid [PID ...]  Process IDs to include (all other processes are excluded) \n--dump           Extract listed DLLs"
     },
     # This is not real (?)
@@ -36,7 +36,7 @@ command_data = {
         "rows": count_rows,
         "headers": ["Offset","Base","Size","Name","Path","File","output"],
         "params": [],
-        "description":"Lists the loaded kernel modules",
+        "description":"\nLists the loaded kernel modules",
         "info": "Volatility 3 Framework 2.5.0 \nusage: volatility windows.modules.Modules [-h] [--dump] [--name NAME] \noptional arguments: \n-h, --help   show this help message and exit \n--dump       Extract listed modules \n--name NAME  module name/sub string"
     },
     "modscan" : {
@@ -44,7 +44,7 @@ command_data = {
         "rows": count_rows,
         "headers": ["Offset","Base","Size","Name","Path","File","output"],
         "params": [],
-        "description":"Scans for modules present in a particular windows memory image",
+        "description":"\nScans for modules present in a particular windows memory image",
         "info": "Volatility 3 Framework 2.5.0 \nusage: volatility windows.modscan.ModScan [-h] [--dump] \noptional arguments: \n-h, --help  show this help message and exit \n--dump      Extract listed modules"
     },
     "pslist" : {
@@ -71,7 +71,7 @@ command_data = {
         "headers": ["PID","PPID","ImageFileName","Offset(V)","Threads","Handles","SessionId","Wow64"
                     ,"CreateTime","ExitTime","File","output"],
         "params": ["Display physcial offsets","PID"],
-        "description": "Plugin for listing processes in a tree based on their parent process ID",
+        "description": "\nPlugin for listing processes in a tree based on their parent process ID",
         "info": "Volatility 3 Framework 2.5.0 \nusage: volatility windows.pstree.PsTree [-h] [--physical] [--pid [PID ...]] \noptional arguments: \n-h, --help       show this help message and exit \n--physical       Display physical offsets instead of virtual \n--pid [PID ...]  Process ID to include (with ancestors and descendants, all other processes are excluded) "
     },
     # This is not real (?)
@@ -88,7 +88,7 @@ command_data = {
         "rows": count_rows,
         "headers": ["Offset","FileFullPath","File","output"],
         "params": ["Filter"],
-        "description":"Lists the registry hives present in a particular	memory image",
+        "description":"\nLists the registry hives present in a particular	memory image",
         "info": "Volatility 3 Framework 2.5.0 \nusage: volatility windows.registry.hivelist.HiveList [-h] [--filter FILTER][--dump] \noptional arguments: \n-h, --help       show this help message and exit \n--filter FILTER  String to filter hive names returned \n--dump           Extract listed registry hives "
     },
     "hivescan" : {
@@ -96,7 +96,7 @@ command_data = {
         "rows": count_rows,
         "headers": ["Offset"],
         "params": [],
-        "description":"Scans for registry hives present in a particular windows memory image",
+        "description":"\nScans for registry hives present in a particular windows memory image",
         "info": "Volatility 3 Framework 2.5.0 \nusage: volatility windows.registry.hivescan.HiveScan [-h] \noptional arguments: \n-h, --help  show this help message and exit "
     },
 
