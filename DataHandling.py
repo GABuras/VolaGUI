@@ -88,7 +88,7 @@ command_data = {
         "rows": count_rows,
         "headers": ["Offset","FileFullPath","File","output"],
         "params": ["Filter"],
-        "description":"\nLists the registry hives present in a particular	memory image",
+        "description":"\nLists the registry hives present in a particular memory image",
         "info": "Volatility 3 Framework 2.5.0 \nusage: volatility windows.registry.hivelist.HiveList [-h] [--filter FILTER][--dump] \noptional arguments: \n-h, --help       show this help message and exit \n--filter FILTER  String to filter hive names returned \n--dump           Extract listed registry hives "
     },
     "hivescan" : {

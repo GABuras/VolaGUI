@@ -462,12 +462,12 @@ class MainWindow(QMainWindow):
             # self.param_lay.addWidget(c)
             paramLayout = QHBoxLayout()
             
-            paramLabel = QLabel(f"{param}")
-            paramLabel.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-            paramLabel.setFixedWidth(50)
+            self.paramLabel = QLabel(f"{param}")
+            self.paramLabel.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+            self.paramLabel.setFixedWidth(50)
             font.setPointSize(15)
-            paramLabel.setFont(font)
-            paramLayout.addWidget(paramLabel)
+            self.paramLabel.setFont(font)
+            paramLayout.addWidget(self.paramLabel)
 
             self.paramEditBox = QLineEdit()
             self.paramEditBox.textChanged.connect(self.update_param)
@@ -510,8 +510,12 @@ class MainWindow(QMainWindow):
 
     #HARDCODED
     def update_param(self):
-        if self.paramEditBox.text() != "":
+        if self.paramEditBox.text() != "" and self.paramLabel.text() == "PID":
             self.command_parameters = " -p " + str(self.paramEditBox.text())
+        elif self.paramEditBox.text() != "" and self.paramLabel.text() == "Filter":
+            self.command_parameters = " -f " + str(self.paramEditBox.text())
+        elif self.paramEditBox.text():
+            self.command_parameters = " " + str(self.paramEditBox.text())
         else:
             self.command_parameters = ""
         self.setup_command_line_box()
