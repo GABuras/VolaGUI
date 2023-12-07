@@ -473,6 +473,9 @@ class MainWindow(QMainWindow):
             self.paramEditBox.setAlignment(Qt.AlignmentFlag.AlignLeft)
             paramLayout.addWidget(self.paramEditBox)
 
+            self.spacing = QLabel("")
+            paramLayout.addWidget(self.spacing)
+
             paramLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
             self.param_lay.addLayout(paramLayout)
 
